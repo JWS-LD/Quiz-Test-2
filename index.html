@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joyce Wang Studio - Interactive Office Quiz</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif {
+      font-family: 'Cinzel', serif;
+    }
+    /* Custom Scrollbar for sleek materials board styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0c0a09;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #292524;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #78716c;
+    }
+  </style>
+
+  <!-- React & ReactDOM UMD CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- Babel Standalone (JSX Compiler) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Firebase UMD Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-stone-950 text-stone-100 min-h-screen">
+
+  <!-- React Mount Root -->
+  <div id="root"></div>
+
+  <!-- React JSX Application Script -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    
+    // --- STABLE NATIVE VECTOR SVG ICONS (Immune to UMD loading conflicts) ---
+    const Compass = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+      </svg>
+    );
+
+    const Sparkles = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+      </svg>
+    );
+
+    const Trophy = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a6 6 0 0 1 6 6v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8a6 6 0 0 1 6-6z" />
+      </svg>
+    );
+
+    const Users = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    );
+
+    const Award = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+      </svg>
+    );
+
+    const QrCodeIcon = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <rect width="5" height="5" x="3" y="3" rx="1" /><rect width="5" height="5" x="16" y="3" rx="1" /><rect width="5" height="5" x="3" y="16" rx="1" />
+        <path d="M21 16h-3a2 2 0 0 0-2 2v3M21 21v.01M12 7v3a2 2 0 0 1-2 2H7M3 12h.01M12 3h.01M12 17h.01M16 12h5" />
+      </svg>
+    );
+
+    const Play = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" {...props}><polygon points="5 3 19 12 5 21 5 3" /></svg>
+    );
+
+    const Plus = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" {...props}><path d="M5 12h14M12 5v14" /></svg>
+    );
+
+    const Trash2 = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+      </svg>
+    );
+
+    const Info = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
+      </svg>
+    );
+
+    const Clock = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+      </svg>
+    );
+
+    const Edit2 = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+      </svg>
+    );
+
+    const ArrowRight = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    );
+
+    const HelpCircle = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" x2="12" y1="17" y2="17" />
+      </svg>
+    );
+
+    const Volume2 = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+      </svg>
+    );
+
+    const VolumeX = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <line x1="22" x2="16" y1="9" y2="15" />
+        <line x1="16" x2="22" y1="9" y2="15" />
+      </svg>
+    );
+
+    const Layout = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <rect width="18" height="18" x="3" y="3" rx="2" />
+        <path d="M3 9h18" />
+        <path d="M9 21V9" />
+      </svg>
+    );
+
+    const ChevronRight = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    );
+
+    const UserPlus = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <line x1="19" x2="19" y1="8" y2="14" />
+        <line x1="22" x2="16" y1="11" y2="11" />
+      </svg>
+    );
+
+    const CheckCircle = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    );
+
+    const RefreshCw = ({ className, ...props }) => (
+      <svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+        <path d="M3 3v5h5" />
+        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+        <path d="M16 16h5v5" />
+      </svg>
+    );
+
+    // --- 30 COMPLETE JOYCE WANG STUDIO QUESTIONS ---
+    const QUIZ_QUESTIONS = [
+      // --- PROJECT QUESTIONS (15) ---
+      {
+        id: 1,
+        type: 'project',
+        title: 'Mott 32 Hong Kong',
+        question: 'Which legendary Chinese restaurant in Hong Kong features custom-designed industrial chain chandeliers, silk-screened fans, and vault-like private dining rooms?',
+        options: ['Mott 32', 'Spiga', 'Ichu Peru', 'Kyubi'],
+        answer: 'Mott 32',
+        explanation: 'Mott 32 Hong Kong is Joyce Wang Studio\'s landmark debut restaurant, blending cinematic Chinese elements with raw industrial aesthetics.',
+        svgType: 'mott32'
+      },
+      {
+        id: 2,
+        type: 'project',
+        title: 'Mandarin Oriental Hyde Park, London',
+        question: 'For the Mandarin Oriental Hyde Park guestroom renovation, the custom brass chandeliers were inspired by which specific natural element from the adjacent Royal Park?',
+        options: ['Hyde Park Oak leaves & acorns', 'Swan wings', 'Serpentine water ripples', 'Rose petals'],
+        answer: 'Hyde Park Oak leaves & acorns',
+        explanation: 'The custom lighting fixtures in guestrooms feature metal and glass motifs meticulously modeled on Hyde Park\'s legendary oak foliage.',
+        svgType: 'oak'
+      },
+      {
+        id: 3,
+        type: 'project',
+        title: 'The Landmark Mandarin Oriental (Entertainment Suite)',
+        question: 'The centerpiece entertainment bar in the ultimate "Entertainment Suite" is crafted from which spectacular materials combination?',
+        options: ['Travertine stone & hand-blown glass', 'Solid Brass & Dark Terrazzo', 'Verde Alpi Marble & Fluted Copper', 'Brushed Steel & Obsidian glass'],
+        answer: 'Travertine stone & hand-blown glass',
+        explanation: 'The bespoke bar is an architectural masterpiece composed of beautifully illuminated hand-blown glass tubes nested inside premium Travertine.',
+        svgType: 'bar'
+      },
+      {
+        id: 4,
+        type: 'project',
+        title: 'Mott 32 Las Vegas',
+        question: 'Which design element serves as the centerpiece in Mott 32 Las Vegas, blending nostalgic cinematic glamour with greenhouse-inspired structural details?',
+        options: ['An iconic vintage neon sign and a suspended dining table from a central metal arbor', 'A 50-foot solid jade counter', 'An indoor bamboo forest with cascading fountains', 'A wall clad entirely in thousands of vintage brass keys'],
+        answer: 'An iconic vintage neon sign and a suspended dining table from a central metal arbor',
+        explanation: 'The Las Vegas outpost features a dramatic architectural arbor and neon glowing aesthetics matching its theatrical Strip context.',
+        svgType: 'neon'
+      },
+      {
+        id: 5,
+        type: 'project',
+        title: 'Kyubi at The Arts Club, London',
+        question: 'The Kyubi Japanese restaurant at London\'s exclusive Arts Club features custom wall panels inspired by what classic source?',
+        options: ['Traditional Meiji-era woodblock prints and silk screens', 'Faceted volcanic obsidian shards', 'Origami paper folds recreated in copper', 'Deep blue ocean currents modeled in lacquer'],
+        answer: 'Traditional Meiji-era woodblock prints and silk screens',
+        explanation: 'Kyubi balances refined Japanese dining with stunning graphic heritage represented through custom-scaled block print aesthetics on fabrics and walls.',
+        svgType: 'kyubi'
+      },
+      {
+        id: 6,
+        type: 'project',
+        title: 'Ichu Peru, Hong Kong',
+        question: 'Which project\'s design translates Peru\'s dramatic landscape, canyons, and rocky topography into fluid raw concrete, deep slate surfaces, and vibrant green stone?',
+        options: ['Ichu Peru', 'The Seymour Residences', 'Equinox Hudson Yards', 'The Berkeley Bar'],
+        answer: 'Ichu Peru',
+        explanation: 'Ichu Peru beautifully simulates South American geography through raw textures, carved canyon-like walls, and a palette inspired by Andes valleys.',
+        svgType: 'canyon'
+      },
+      {
+        id: 7,
+        type: 'project',
+        title: 'Joyce\'s Background',
+        question: 'Before launching her world-renowned design studio, Joyce Wang studied architecture and materials at which two world-class institutions?',
+        options: ['MIT & Royal College of Art, London', 'Harvard & AA School of Architecture', 'Columbia University & Royal Academy', 'Stanford & Central Saint Martins'],
+        answer: 'MIT & Royal College of Art, London',
+        explanation: 'Joyce studied Architecture and Materials Science at MIT in Boston, and later pursued her Master’s at the Royal College of Art in London.',
+        svgType: 'mit'
+      },
+      {
+        id: 8,
+        type: 'project',
+        title: 'Mott 32 Vancouver',
+        question: 'What is the signature visual anchor of Mott 32 Vancouver that represents the dialogue between local West Coast pine forests and high-end Chinese heritage?',
+        options: ['Intricate Chinese screen partitions combined with raw cedar columns and industrial steel work', 'A ceiling covered in thousands of floating porcelain teacups', 'A large central glass-encased garden courtyard', 'A glowing jade corridor resembling a modern gemstone vault'],
+        answer: 'Intricate Chinese screen partitions combined with raw cedar columns and industrial steel work',
+        explanation: 'Mott 32 Vancouver balances local industrialism and cedar warmth with traditional eastern motifs.',
+        svgType: 'screens'
+      },
+      {
+        id: 9,
+        type: 'project',
+        title: 'Equinox Fitness Club, Hudson Yards NY',
+        question: 'The design for the Equinox club at Hudson Yards features soaring metal framework and textured glass inspired by what urban element?',
+        options: ['The dynamic energy of the local railway yard and active human performance', 'The shimmering sails of ships in the Hudson River', 'The structural geometry of high-tech space shuttles', 'Classic Art Deco skyscraper crowns'],
+        answer: 'The dynamic energy of the local railway yard and active human performance',
+        explanation: 'The layout utilizes dynamic structural frames, dark metals, and rich lighting reminiscent of the intersecting tracks of the adjacent Hudson Yards.',
+        svgType: 'rail'
+      },
+      {
+        id: 10,
+        type: 'project',
+        title: 'Spiga, Hong Kong',
+        question: 'The design of Spiga Italian restaurant in Hong Kong evokes the cinematic glamour of which decade?',
+        options: ['1950s cinematic Italy with vintage circus elements and warm leather details', '1920s Art Deco Milan', '1980s Memphis-style geometric retro', '1970s Italian brutalism'],
+        answer: '1950s cinematic Italy with vintage circus elements and warm leather details',
+        explanation: 'Spiga channels the romance of Mid-century Italy, incorporating retro light bulbs, carousel motifs, and vintage brass instruments.',
+        svgType: 'circus'
+      },
+      {
+        id: 11,
+        type: 'project',
+        title: 'The Seymour, London',
+        question: 'This high-end residential project in London features a design that balances mid-century industrialism with classic British tailored detailing. Which project is it?',
+        options: ['The Seymour', 'Belgravia Mews', 'The Berkeley Penthouse', 'Royal Park Residence'],
+        answer: 'The Seymour',
+        explanation: 'The Seymour incorporates bespoke metal screens, dark timber parquetry, and sophisticated mid-century furniture curated by the studio.',
+        svgType: 'seymour'
+      },
+      {
+        id: 12,
+        type: 'project',
+        title: 'Studio Materials Signature',
+        question: 'Joyce Wang Studio is internationally celebrated for bespoke custom furniture. Which metal treatment is a frequent studio signature in their custom bases?',
+        options: ['Sculptural Cast Bronze', 'Bright Chrome Plating', 'Distressed Gold Leaf', 'Anodized Bright Pink Aluminum'],
+        answer: 'Sculptural Cast Bronze',
+        explanation: 'Cast bronze, often showcasing organic and rough-hewn textures, is a hallmark of Joyce Wang\'s bespoke furniture and lighting installations.',
+        svgType: 'bronze'
+      },
+      {
+        id: 13,
+        type: 'project',
+        title: 'The Berkeley Hotel, London',
+        question: 'For the ultimate suites at The Berkeley London, Joyce Wang designed a gorgeous dining area containing a custom lighting array resembling which geometric form?',
+        options: ['Intersecting brass hoops and rings with custom glass droplets', 'A single continuous neon tube bent in a spiral', 'A massive block of carved alabaster', 'Prismatic metallic cubes suspended on invisible wires'],
+        answer: 'Intersecting brass hoops and rings with custom glass droplets',
+        explanation: 'The suite contains a spectacular bespoke chandelier composed of hand-crafted concentric brass hoops representing cosmic tracks and starry droplets.',
+        svgType: 'rings'
+      },
+      {
+        id: 14,
+        type: 'project',
+        title: 'Mandarin Oriental Residences, Bangkok',
+        question: 'For the spectacular residences in Bangkok, what geographic feature inspired the fluid spatial layouts and wave-like architectural copper screens?',
+        options: ['The Chao Phraya River', 'The Gulf of Thailand reefs', 'The patterns of the Northern mountain ridges', 'The structures of traditional floating markets'],
+        answer: 'The Chao Phraya River',
+        explanation: 'The design features soft, riverine contours, water-reflective metallic finishes, and screens inspired by traditional boat hulls along the Chao Phraya.',
+        svgType: 'river'
+      },
+      {
+        id: 15,
+        type: 'project',
+        title: 'The Landmark Mandarin Oriental (Apartment Suite)',
+        question: 'Which material, beloved for its dramatic active veining, covers the spectacular fireplace hearth and acts as the luxurious backdrop of the Living Room in the Apartment Suite?',
+        options: ['Calacatta marble with gold and grey veins', 'Nero Marquina black marble', 'Red Iranian Travertine', 'Sodalite Blue quartzite'],
+        answer: 'Calacatta marble with gold and grey veins',
+        explanation: 'The luxurious, home-away-from-home styling relies on premium, highly active Calacatta marble slabs book-matched around the central hearth.',
+        svgType: 'marble'
+      },
+
+      // --- PEOPLE / MOST LIKELY TO QUESTIONS (15) ---
+      { id: 16, type: 'people', prompt: 'Who is most likely to stay in the studio past midnight perfecting a 3D rendering or presentation layout?' },
+      { id: 17, type: 'people', prompt: 'Who is most likely to suggest an outrageously expensive custom brass fixture that completely elevates the design?' },
+      { id: 18, type: 'people', prompt: 'Who is most likely to spot a 1mm misalignment in a terrazzo tile layout during a rapid site inspection?' },
+      { id: 19, type: 'people', prompt: 'Who is most likely to accidentally walk away from a showroom holding the only premium Calacatta gold marble sample?' },
+      { id: 20, type: 'people', prompt: 'Who is most likely to drink more than 5 cups of strong espresso before the lunch hour?' },
+      { id: 21, type: 'people', prompt: 'Who is most likely to have the most meticulously categorized material tray in the studio library?' },
+      { id: 22, type: 'people', prompt: 'Who is most likely to charm a client into doubling their custom light fixtures budget?' },
+      { id: 23, type: 'people', prompt: 'Who is most likely to show up to a dusty construction site wearing the most pristine, stylish designer outfit?' },
+      { id: 24, type: 'people', prompt: 'Who is most likely to be caught hoarding hundreds of gorgeous leather and fabric swatches at their desk?' },
+      { id: 25, type: 'people', prompt: 'Who is most likely to deliver a 15-minute lecture on why cool-white LED temperature is a crime against humanity?' },
+      { id: 26, type: 'people', prompt: 'Who is most likely to identify the designer, manufacturer, and year of launch of any mid-century chair at a single glance?' },
+      { id: 27, type: 'people', prompt: 'Who is most likely to spill an iced latte onto a printed drawing set right before a major client meeting?' },
+      { id: 28, type: 'people', prompt: 'Who is most likely to seize control of the studio speakers and play non-stop hypnotic house beats?' },
+      { id: 29, type: 'people', prompt: 'Who is most likely to immediately initiate a round of celebratory cocktails after a highly stressful client sign-off?' },
+      { id: 30, type: 'people', prompt: 'Who is most likely to create a moodboard that looks worthy of being hung in an avant-garde art gallery?' }
+    ];
+
+    // --- VECTOR ARCHITECTURAL ILLUSTRATIONS (SVG) ---
+    function ProjectIllustration({ type }) {
+      const baseClass = "w-full h-48 md:h-64 rounded-xl flex items-center justify-center relative overflow-hidden bg-stone-900 border border-amber-500/20";
+      
+      switch (type) {
+        case 'mott32':
+          return (
+            <div className={baseClass}>
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-transparent opacity-90" />
+              <svg className="w-4/5 h-4/5 text-amber-500/40" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M10,90 Q100,10 190,90" strokeWidth="2" strokeDasharray="3,3" />
+                <path d="M30,90 Q100,25 170,90" />
+                <path d="M50,90 Q100,40 150,90" />
+                <line x1="80" y1="35" x2="80" y2="75" strokeWidth="3" />
+                <line x1="120" y1="35" x2="120" y2="75" strokeWidth="3" />
+                <ellipse cx="100" cy="70" rx="35" ry="8" fill="none" strokeWidth="2" className="text-amber-400" />
+                <path d="M15,80 A10,10 0 0,1 35,80 Z" fill="currentColor" opacity="0.3" />
+                <path d="M165,80 A10,10 0 0,1 185,80 Z" fill="currentColor" opacity="0.3" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">CINEMATIC DUALITY</div>
+            </div>
+          );
+        case 'oak':
+          return (
+            <div className={baseClass}>
+              <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/20 to-stone-950" />
+              <svg className="w-4/5 h-4/5 text-amber-500/40" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <line x1="100" y1="10" x2="100" y2="40" />
+                <path d="M100,40 C70,50 50,30 30,55" />
+                <path d="M100,40 C130,50 150,30 170,55" />
+                <path d="M100,40 L100,75" />
+                <path d="M30,55 Q25,45 35,40 Q45,45 40,55 Z" fill="currentColor" opacity="0.2" />
+                <path d="M170,55 Q165,45 175,40 Q185,45 180,55 Z" fill="currentColor" opacity="0.2" />
+                <ellipse cx="100" cy="80" rx="8" ry="12" fill="none" strokeWidth="2" className="text-amber-400" />
+                <path d="M92,75 Q100,70 108,75" fill="none" strokeWidth="2" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">HYDE PARK FOLIAGE</div>
+            </div>
+          );
+        case 'bar':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1">
+                <rect x="40" y="55" width="120" height="35" rx="4" fill="currentColor" opacity="0.1" strokeWidth="2" />
+                <line x1="50" y1="20" x2="50" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="60" y1="15" x2="60" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="70" y1="25" x2="70" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="80" y1="10" x2="80" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="90" y1="20" x2="90" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="100" y1="15" x2="100" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="110" y1="25" x2="110" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="120" y1="12" x2="120" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="130" y1="22" x2="130" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="140" y1="18" x2="140" y2="55" strokeWidth="2" className="text-amber-400" />
+                <line x1="150" y1="28" x2="150" y2="55" strokeWidth="2" className="text-amber-400" />
+                <ellipse cx="100" cy="90" rx="70" ry="6" fill="currentColor" opacity="0.15" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">GLASS & STONE RESPLENDENCE</div>
+            </div>
+          );
+        case 'neon':
+          return (
+            <div className={baseClass}>
+              <div className="absolute inset-0 bg-red-950/10" />
+              <svg className="w-4/5 h-4/5" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M40,95 L40,50 A60,60 0 0,1 160,50 L160,95" className="text-neutral-700" />
+                <path d="M100,15 L100,45" className="text-red-500" strokeWidth="2.5" />
+                <circle cx="100" cy="48" r="8" fill="none" className="text-red-500 animate-pulse" strokeWidth="2" />
+                <line x1="60" y1="40" x2="60" y2="85" className="text-amber-500/40" />
+                <line x1="140" y1="40" x2="140" y2="85" className="text-amber-500/40" />
+                <path d="M50,40 Q100,55 150,40" className="text-emerald-600/60" strokeWidth="3" />
+                <rect x="50" y="85" width="100" height="4" fill="#d97706" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">VEGAS GLAMOUR</div>
+            </div>
+          );
+        case 'kyubi':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M10,90 Q30,70 50,90 T90,90 T130,90 T170,90" />
+                <path d="M20,80 Q40,65 60,80 T100,80 T140,80 T180,80" />
+                <rect x="50" y="10" width="30" height="70" />
+                <rect x="85" y="5" width="30" height="75" className="text-amber-400" />
+                <rect x="120" y="10" width="30" height="70" />
+                <line x1="100" y1="5" x2="100" y2="80" />
+                <line x1="65" y1="10" x2="65" y2="80" />
+                <line x1="135" y1="10" x2="135" y2="80" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">NIPPON SCREENS</div>
+            </div>
+          );
+        case 'canyon':
+          return (
+            <div className={baseClass}>
+              <div className="absolute inset-0 bg-emerald-950/20" />
+              <svg className="w-4/5 h-4/5 text-emerald-500/40" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M0,0 L40,20 L25,45 L45,70 L15,90 L0,100 Z" fill="currentColor" opacity="0.15" />
+                <path d="M200,0 L160,25 L175,50 L150,75 L180,92 L200,100 Z" fill="currentColor" opacity="0.15" />
+                <path d="M100,0 Q110,35 90,65 T105,100" strokeWidth="3" className="text-amber-400" />
+                <polygon points="80,30 110,25 120,45 95,50" fill="none" stroke="currentColor" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">PERUVIAN CANYON DEEP</div>
+            </div>
+          );
+        case 'mit':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <g>
+                  <line x1="0" y1="20" x2="200" y2="20" strokeDasharray="2,2" />
+                  <line x1="0" y1="50" x2="200" y2="50" strokeDasharray="2,2" />
+                  <line x1="0" y1="80" x2="200" y2="80" strokeDasharray="2,2" />
+                  <line x1="50" y1="0" x2="50" y2="100" strokeDasharray="2,2" />
+                  <line x1="100" y1="0" x2="100" y2="100" strokeDasharray="2,2" />
+                  <line x1="150" y1="0" x2="150" y2="100" strokeDasharray="2,2" />
+                </g>
+                <polygon points="40,75 80,45 100,85" className="text-amber-500/50" fill="none" strokeWidth="2.5" />
+                <circle cx="130" cy="45" r="25" className="text-amber-400" fill="none" strokeWidth="2" />
+                <path d="M100,10 L80,60" strokeWidth="2" />
+                <path d="M100,10 L120,60" strokeWidth="2" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">GEOMETRIC THEORY</div>
+            </div>
+          );
+        case 'screens':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <rect x="25" y="0" width="12" height="100" fill="currentColor" opacity="0.15" />
+                <rect x="165" y="0" width="12" height="100" fill="currentColor" opacity="0.15" />
+                <rect x="55" y="10" width="90" height="80" strokeWidth="2" />
+                <line x1="55" y1="30" x2="145" y2="30" />
+                <line x1="55" y1="50" x2="145" y2="50" />
+                <line x1="55" y1="70" x2="145" y2="70" />
+                <line x1="77" y1="10" x2="77" y2="90" />
+                <line x1="100" y1="10" x2="100" y2="90" className="text-amber-400" />
+                <line x1="122" y1="10" x2="122" y2="90" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">EAST MEETS WEST WOODS</div>
+            </div>
+          );
+        case 'rail':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-neutral-500" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M0,90 Q90,70 200,90" />
+                <path d="M0,80 Q90,65 200,80" />
+                <path d="M0,10 L100,50 L200,10" className="text-amber-500/40" />
+                <path d="M0,20 L100,60 L200,20" className="text-amber-500/40" />
+                <polyline points="75,40 100,60 125,40" strokeWidth="3" className="text-amber-400" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">DYN MIC INDUSTRIAL</div>
+            </div>
+          );
+        case 'circus':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M20,95 L20,60 L100,10 L180,60 L180,95" />
+                <line x1="100" y1="10" x2="100" y2="95" strokeDasharray="3,3" />
+                <circle cx="50" cy="55" r="3" fill="#f59e0b" className="animate-ping" />
+                <circle cx="75" cy="45" r="3" fill="#f59e0b" />
+                <circle cx="100" cy="40" r="3" fill="#f59e0b" />
+                <circle cx="125" cy="45" r="3" fill="#f59e0b" />
+                <circle cx="150" cy="55" r="3" fill="#f59e0b" className="animate-ping" />
+                <path d="M40,85 C70,75 130,75 160,85" strokeWidth="3.5" className="text-amber-400" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">MIDCENTURY CINEMA RESTORATION</div>
+            </div>
+          );
+        case 'seymour':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <rect x="50" y="30" width="100" height="60" strokeWidth="2" />
+                <rect x="70" y="50" width="60" height="40" fill="currentColor" opacity="0.1" />
+                <rect x="15" y="10" width="25" height="80" />
+                <rect x="160" y="10" width="25" height="80" />
+                <line x1="100" y1="15" x2="100" y2="30" className="text-amber-400" strokeWidth="2" />
+                <circle cx="100" cy="15" r="5" fill="#f59e0b" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">LONDON HIGH-SOCIETY</div>
+            </div>
+          );
+        case 'bronze':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/40" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M60,95 Q50,60 70,10 Q80,60 70,95 Z" fill="currentColor" opacity="0.2" strokeWidth="2" className="text-amber-600" />
+                <path d="M140,95 Q150,60 130,10 Q120,60 130,95 Z" fill="currentColor" opacity="0.2" strokeWidth="2" className="text-amber-600" />
+                <line x1="30" y1="10" x2="170" y2="10" strokeWidth="3" className="text-amber-400" />
+                <path d="M65,30 Q60,45 68,60" strokeWidth="1" />
+                <path d="M135,40 Q140,55 132,70" strokeWidth="1" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">BRONZE CHISELED TEXTURES</div>
+            </div>
+          );
+        case 'rings':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <ellipse cx="100" cy="50" rx="60" ry="25" strokeWidth="2" className="text-amber-500" />
+                <ellipse cx="100" cy="50" rx="45" ry="12" strokeWidth="1.5" className="text-amber-400" />
+                <ellipse cx="100" cy="50" rx="80" ry="35" strokeWidth="1" strokeDasharray="4,2" />
+                <line x1="100" y1="0" x2="100" y2="50" />
+                <circle cx="60" cy="62" r="3" fill="#f59e0b" />
+                <circle cx="140" cy="38" r="3" fill="#f59e0b" />
+                <circle cx="100" cy="62" r="4" fill="#f59e0b" />
+                <circle cx="75" cy="45" r="2.5" fill="#f59e0b" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">CELESTIAL HOOPS</div>
+            </div>
+          );
+        case 'river':
+          return (
+            <div className={baseClass}>
+              <div className="absolute inset-0 bg-amber-950/10" />
+              <svg className="w-4/5 h-4/5 text-amber-500/40" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M0,50 Q40,15 80,50 T160,50 T200,50" strokeWidth="3" className="text-amber-500" />
+                <path d="M0,60 Q40,25 80,60 T160,60 T200,60" strokeWidth="1.5" />
+                <path d="M0,40 Q40,5 80,40 T160,40 T200,40" strokeWidth="1.5" />
+                <line x1="40" y1="0" x2="40" y2="25" />
+                <line x1="120" y1="0" x2="120" y2="25" />
+                <line x1="160" y1="0" x2="160" y2="35" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">BANGKOK RIVERFRONT</div>
+            </div>
+          );
+        case 'marble':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/30" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1">
+                <rect x="20" y="10" width="160" height="80" strokeWidth="1.5" />
+                <line x1="100" y1="10" x2="100" y2="90" strokeDasharray="3,3" />
+                <path d="M30,15 C45,35 60,30 75,55 C85,70 95,65 100,85" strokeWidth="2.5" className="text-stone-700" />
+                <path d="M50,15 C60,40 50,60 80,85" strokeWidth="1" className="text-stone-600" />
+                <path d="M170,15 C155,35 140,30 125,55 C115,70 105,65 100,85" strokeWidth="2.5" className="text-stone-700" />
+                <path d="M150,15 C140,40 150,60 120,85" strokeWidth="1" className="text-stone-600" />
+                <path d="M60,45 L85,60" className="text-amber-500" strokeWidth="1.5" />
+                <path d="M140,45 L115,60" className="text-amber-500" strokeWidth="1.5" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-xs tracking-widest text-amber-500 uppercase font-mono">CALACATTA GOLD COUTURE</div>
+            </div>
+          );
+        default:
+          return (
+            <div className={baseClass}>
+              <HelpCircle />
+            </div>
+          );
+      }
+    }
+
+    // --- FIREBASE DYNAMIC SETUP RETRIEVAL ---
+    const getFirebaseConfig = () => {
+      // First, try loading customized user configurations from localStorage
+      const savedConfig = localStorage.getItem('jw_quiz_custom_config');
+      if (savedConfig) {
+        try {
+          return JSON.parse(savedConfig);
+        } catch(e) {}
+      }
+
+      // Check workspace environment settings
+      try {
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          return JSON.parse(__firebase_config);
+        }
+      } catch (e) {}
+
+      // Default empty placeholder
+      return {
+        apiKey: "AIzaSyA1-Example-ApiKey-Here",
+        authDomain: "joyce-wang-quiz-demo.firebaseapp.com",
+        projectId: "joyce-wang-quiz-demo",
+        storageBucket: "joyce-wang-quiz-demo.appspot.com",
+        messagingSenderId: "1234567890",
+        appId: "1:1234567890:web:abcdef123456"
+      };
+    };
+
+    const getAppId = () => {
+      try {
+        if (typeof __app_id !== 'undefined' && __app_id) {
+          return __app_id;
+        }
+      } catch (e) {}
+      return 'joyce-wang-quiz-lobby';
+    };
+
+    const firebaseConfig = getFirebaseConfig();
+    const appId = getAppId();
+
+    const isPlaceholderConfig = firebaseConfig.apiKey === "AIzaSyA1-Example-ApiKey-Here";
+
+    let app, auth, db;
+    let isDbOperational = false;
+
+    if (!isPlaceholderConfig) {
+      try {
+        app = firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.firestore();
+        isDbOperational = true;
+      } catch (e) {
+        console.warn("Could not connect to Firebase using current credentials:", e);
+      }
+    }
+
+    // --- AUDIO SYNTHESIS SYSTEM (Web Audio API) ---
+    class SoundManager {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+      playTone(freq, type, duration, delay = 0) {
+        if (this.muted) return;
+        this.init();
+        setTimeout(() => {
+          try {
+            const osc = this.ctx.createOscillator();
+            const gainNode = this.ctx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(this.ctx.destination);
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gainNode.gain.setValueAtTime(0.15, this.ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+            osc.start();
+            osc.stop(this.ctx.currentTime + duration);
+          } catch (e) {
+            console.warn("Sound play error", e);
+          }
+        }, delay * 1000);
+      }
+      playSuccess() {
+        this.playTone(523.25, 'sine', 0.15, 0); // C5
+        this.playTone(659.25, 'sine', 0.15, 0.1); // E5
+        this.playTone(783.99, 'sine', 0.3, 0.2); // G5
+      }
+      playError() {
+        this.playTone(220, 'triangle', 0.2, 0); // A3
+        this.playTone(180, 'triangle', 0.3, 0.1); // F3
+      }
+      playTick() {
+        this.playTone(880, 'sine', 0.02, 0); // High tick
+      }
+      playJoin() {
+        this.playTone(392, 'sine', 0.1, 0); // G4
+        this.playTone(523.25, 'sine', 0.2, 0.08); // C5
+      }
+      playFanfare() {
+        this.playTone(261.63, 'square', 0.2, 0); // C4
+        this.playTone(329.63, 'square', 0.2, 0.1); // E4
+        this.playTone(392.00, 'square', 0.2, 0.2); // G4
+        this.playTone(523.25, 'square', 0.5, 0.3); // C5
+      }
+    }
+    const sfx = new SoundManager();
+
+    // --- MAIN REACT APPLICATION ---
+    function App() {
+      const [role, setRole] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('role') || 'select';
+      });
+
+      const [user, setUser] = useState(null);
+      const [isMuted, setIsMuted] = useState(false);
+      const [localMode, setLocalMode] = useState(false);
+
+      const [configInput, setConfigInput] = useState("");
+      const [customNotification, setCustomNotification] = useState("");
+
+      useEffect(() => {
+        sfx.muted = isMuted;
+      }, [isMuted]);
+
+      useEffect(() => {
+        if (localMode || isPlaceholderConfig) {
+          // Mock auth for local fallback previewing
+          setUser({ uid: 'mock-user-id', isAnonymous: true });
+          return;
+        }
+
+        const initAuth = async () => {
+          try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              await auth.signInWithCustomToken(__initial_auth_token);
+            } else {
+              await auth.signInAnonymously();
+            }
+          } catch (e) {
+            console.error("Firebase auth failed:", e);
+            setLocalMode(true);
+          }
+        };
+        initAuth();
+        const unsubscribe = auth.onAuthStateChanged(setUser);
+        return () => unsubscribe();
+      }, [localMode]);
+
+      const handleSaveConfig = () => {
+        try {
+          let cleanInput = configInput.trim();
+          if (cleanInput.startsWith("const firebaseConfig =")) {
+            cleanInput = cleanInput.replace("const firebaseConfig =", "");
+          }
+          if (cleanInput.endsWith(";")) {
+            cleanInput = cleanInput.slice(0, -1);
+          }
+          
+          const parsed = eval(`(${cleanInput})`);
+          if (parsed && parsed.apiKey) {
+            localStorage.setItem('jw_quiz_custom_config', JSON.stringify(parsed));
+            setCustomNotification("Config saved successfully! Reloading...");
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            setCustomNotification("Error: Invalid configuration format.");
+          }
+        } catch (e) {
+          setCustomNotification("Error parsing config object. Ensure you copied the exact structure.");
+        }
+      };
+
+      // --- CONFIGURATION OVERLAY (Bypasses loading hangs seamlessly) ---
+      if (isPlaceholderConfig && !localMode) {
+        return (
+          <div className="min-h-screen bg-stone-950 flex flex-col justify-center items-center text-stone-100 p-6 relative font-sans">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,#292524_0%,transparent_100%)] opacity-40" />
+            <div className="z-10 max-w-lg w-full bg-stone-900 border border-amber-500/20 rounded-3xl p-8 space-y-6 shadow-2xl">
+              <div className="flex items-center gap-3">
+                <div className="bg-amber-500 text-stone-950 p-2.5 rounded-xl font-bold font-serif">JW</div>
+                <div>
+                  <h1 className="text-xl font-bold font-serif text-white tracking-wider uppercase">Multi-device Live Sync Setup</h1>
+                  <p className="text-xs text-amber-500 font-mono tracking-widest uppercase">Action Required</p>
+                </div>
+              </div>
+
+              {customNotification && (
+                <div className="bg-amber-500/10 border border-amber-500/30 text-amber-400 p-3 rounded-xl text-xs text-center font-semibold">
+                  {customNotification}
+                </div>
+              )}
+
+              <div className="text-xs text-stone-300 space-y-3 font-light leading-relaxed">
+                <p>Because you are hosting outside our developer workspace (on Netlify Drop), players' phones and your presenter screen require a shared database connection to communicate.</p>
+                <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-1">
+                  <span class="text-[9px] font-mono text-amber-500 uppercase font-bold tracking-wider">How to get this config (Takes 1 Minute):</span>
+                  <ol class="list-decimal list-inside text-[10px] space-y-1 text-stone-400">
+                    <li>Go to <a href="https://console.firebase.google.com/" target="_blank" class="text-amber-400 underline font-semibold">Firebase Console</a> and create a project.</li>
+                    <li>Add a Web App (click the &lt;/&gt; icon) and copy the <code class="text-amber-500">firebaseConfig</code> object.</li>
+                    <li>Enable **Anonymous Auth** & **Firestore Database** in the console menu.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400 block">Paste firebaseConfig Block:</label>
+                <textarea 
+                  value={configInput}
+                  onChange={(e) => setConfigInput(e.target.value)}
+                  placeholder={`{\n  apiKey: "AIzaSy...",\n  authDomain: "...",\n  projectId: "..."\n}`}
+                  rows={5}
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-4 text-xs font-mono text-amber-400 focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onClick={handleSaveConfig} className="bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold py-3.5 px-4 rounded-xl text-xs uppercase tracking-widest transition-all">
+                  Save & Connect
+                </button>
+                <button onClick={() => setLocalMode(true)} className="border border-stone-700 hover:border-emerald-500/40 hover:bg-emerald-950/20 text-emerald-400 font-bold py-3.5 px-4 rounded-xl text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-1.5">
+                  <Sparkles /> Local Testing Preview
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      if (role === 'select') {
+        return <WelcomeScreen setRole={setRole} isMuted={isMuted} setIsMuted={setIsMuted} />;
+      }
+
+      if (role === 'host') {
+        return <HostScreen user={user} isMuted={isMuted} setIsMuted={setIsMuted} localMode={localMode} goBack={() => setRole('select')} />;
+      }
+
+      if (role === 'player') {
+        return <PlayerScreen user={user} isMuted={isMuted} setIsMuted={setIsMuted} localMode={localMode} goBack={() => setRole('select')} />;
+      }
+
+      return null;
+    }
+
+    // ==========================================
+    // 1. WELCOME SCREEN
+    // ==========================================
+    function WelcomeScreen({ setRole, isMuted, setIsMuted }) {
+      return (
+        <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-6 md:p-12 relative overflow-hidden font-sans">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35" />
+
+          <header className="z-10 flex justify-between items-center w-full border-b border-stone-800 pb-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-amber-500 text-stone-950 p-2 rounded-lg font-bold tracking-tighter font-serif">
+                JW
+              </div>
+              <div>
+                <h1 className="text-lg font-bold tracking-widest text-stone-200 uppercase font-serif">Joyce Wang Studio</h1>
+                <p className="text-xs text-amber-500/80 uppercase tracking-widest">Interactive Game Show</p>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setIsMuted(!isMuted)} 
+              className="text-stone-400 hover:text-stone-200 p-2 border border-stone-800 rounded-lg hover:bg-stone-900 transition-colors"
+            >
+              {isMuted ? <VolumeX /> : <Volume2 />}
+            </button>
+          </header>
+
+          <main className="z-10 flex-1 flex flex-col justify-center items-center py-12 max-w-4xl mx-auto text-center gap-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-950/20 text-amber-400 text-xs tracking-wider uppercase font-mono">
+              <Sparkles /> Live Multiplayer Office Quiz
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-7xl font-light tracking-tight text-white leading-tight font-serif">
+                The Ultimate <br />
+                <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">
+                  Design & People
+                </span> Quiz
+              </h2>
+              <p className="text-stone-400 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+                A premium real-time battle of architectural intelligence, project recall, and studio camaraderie. Perfect for office events, featuring <span className="text-amber-400 font-medium">30 interactive questions</span> split between iconic Joyce Wang Studio projects and hilarious peer-voting.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl mt-4">
+              <button 
+                onClick={() => { sfx.playJoin(); setRole('host'); }}
+                className="group relative flex flex-col justify-between items-start text-left p-6 rounded-2xl bg-gradient-to-br from-stone-900 to-stone-950 border border-amber-500/20 hover:border-amber-500/50 hover:shadow-2xl hover:shadow-amber-950/20 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full filter blur-xl group-hover:bg-amber-500/10 transition-colors" />
+                <div className="p-3 bg-amber-500/10 rounded-xl text-amber-500 mb-6 group-hover:bg-amber-500 group-hover:text-stone-950 transition-colors">
+                  <Layout />
+                </div>
+                <div>
+                  <span className="text-xs font-mono tracking-widest text-amber-500 uppercase">Large Screen Presentation</span>
+                  <h3 className="text-xl font-bold text-white mt-1 group-hover:text-amber-300 transition-colors">Host Live Screen</h3>
+                  <p className="text-stone-400 text-xs mt-2 font-light">
+                    Launch the master lobby. Generates a QR Code for team members to scan and displays live questions, illustrations, response tallies, and the leaderboard podium.
+                  </p>
+                </div>
+                <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                  Launch Presenter <ArrowRight />
+                </div>
+              </button>
+
+              <button 
+                onClick={() => { sfx.playJoin(); setRole('player'); }}
+                className="group relative flex flex-col justify-between items-start text-left p-6 rounded-2xl bg-gradient-to-br from-stone-900 to-stone-950 border border-stone-800 hover:border-amber-500/30 hover:shadow-2xl hover:shadow-emerald-950/10 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full filter blur-xl group-hover:bg-emerald-500/10 transition-colors" />
+                <div className="p-3 bg-stone-800 rounded-xl text-stone-300 mb-6 group-hover:bg-emerald-500 group-hover:text-stone-950 transition-colors">
+                  <Users />
+                </div>
+                <div>
+                  <span className="text-xs font-mono tracking-widest text-stone-400 uppercase">Mobile Controller</span>
+                  <h3 className="text-xl font-bold text-white mt-1 group-hover:text-emerald-300 transition-colors">Join as Player</h3>
+                  <p className="text-stone-400 text-xs mt-2 font-light">
+                    Join a live game hosted on the office screen. Select responses, lock-in project guesses, and vote for your colleagues in real-time "Most Likely To" questions.
+                  </p>
+                </div>
+                <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-emerald-400 uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                  Connect Controller <ArrowRight />
+                </div>
+              </button>
+            </div>
+          </main>
+
+          <footer className="z-10 border-t border-stone-900 pt-6 text-center text-xs text-stone-500 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>© 2026 Joyce Wang Studio Interactive Suite.</p>
+          </footer>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 2. HOST SCREEN (LIVE TV / SCREEN VIEW)
+    // ==========================================
+    function HostScreen({ user, isMuted, setIsMuted, localMode, goBack }) {
+      const [gameState, setGameState] = useState(null);
+      const [players, setPlayers] = useState([]);
+      
+      // BLANK STUDIO MEMBER REGISTRATION BY DEFAULT
+      const [customMembers, setCustomMembers] = useState([]);
+      const [newMemberName, setNewMemberName] = useState("");
+
+      const [loading, setLoading] = useState(true);
+      const [timerLeft, setTimerLeft] = useState(25);
+      const timerIntervalRef = useRef(null);
+      const [showOverrideInput, setShowOverrideInput] = useState(false);
+      const [joinLinkOverride, setJoinLinkOverride] = useState("");
+
+      // Database Paths formatted strictly under RULE 1
+      const gameDocRef = db.doc(`artifacts/${appId}/public/data/games/lobby`);
+      const playersColRef = db.collection(`artifacts/${appId}/public/data/players`);
+
+      useEffect(() => {
+        if (!user) return;
+
+        const unsubGame = gameDocRef.onSnapshot((snapshot) => {
+          if (snapshot.exists) {
+            setGameState(snapshot.data());
+            setLoading(false);
+          } else {
+            const initialSetup = {
+              status: 'setup',
+              currentQuestionIndex: 0,
+              questionStartTime: 0,
+              membersList: []
+            };
+            gameDocRef.set(initialSetup);
+            setGameState(initialSetup);
+            setLoading(false);
+          }
+        }, (err) => {
+          console.error("Firestore Game state error:", err);
+          setLoading(false);
+        });
+
+        const unsubPlayers = playersColRef.onSnapshot((snapshot) => {
+          const playersList = [];
+          snapshot.forEach((doc) => {
+            playersList.push({ id: doc.id, ...doc.data() });
+          });
+          setPlayers(playersList);
+        }, (err) => {
+          console.error("Firestore Players load error:", err);
+        });
+
+        return () => {
+          unsubGame();
+          unsubPlayers();
+        };
+      }, [user]);
+
+      useEffect(() => {
+        if (gameState && gameState.status === 'playing') {
+          sfx.playTick();
+          setTimerLeft(25);
+          
+          if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+          
+          timerIntervalRef.current = setInterval(() => {
+            setTimerLeft((prev) => {
+              if (prev <= 1) {
+                clearInterval(timerIntervalRef.current);
+                revealAnswers();
+                return 0;
+              }
+              if (prev <= 6) {
+                sfx.playTone(600, 'sine', 0.08);
+              } else {
+                sfx.playTone(400, 'sine', 0.03);
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        } else {
+          if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+        }
+
+        return () => {
+          if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+        };
+      }, [gameState?.status, gameState?.currentQuestionIndex]);
+
+      const handleAddMember = () => {
+        if (!newMemberName.trim()) return;
+        if (customMembers.includes(newMemberName.trim())) return;
+        setCustomMembers([...customMembers, newMemberName.trim()]);
+        setNewMemberName("");
+      };
+
+      const handleRemoveMember = (name) => {
+        setCustomMembers(customMembers.filter(m => m !== name));
+      };
+
+      const createLobby = async () => {
+        sfx.playSuccess();
+        await gameDocRef.set({
+          status: 'lobby',
+          currentQuestionIndex: 0,
+          questionStartTime: Date.now(),
+          membersList: customMembers
+        });
+      };
+
+      const clearPlayers = async () => {
+        sfx.playError();
+        for (const player of players) {
+          await playersColRef.doc(player.id).delete();
+        }
+      };
+
+      const startGame = async () => {
+        sfx.playSuccess();
+        await gameDocRef.update({
+          status: 'playing',
+          currentQuestionIndex: 0,
+          questionStartTime: Date.now()
+        });
+        for (const p of players) {
+          await playersColRef.doc(p.id).update({
+            currentAnswer: "",
+            score: 0
+          });
+        }
+      };
+
+      const revealAnswers = async () => {
+        if (!gameState) return;
+        sfx.playSuccess();
+
+        const qIndex = gameState.currentQuestionIndex ?? 0;
+        const currentQuestion = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+        let updatedPlayers = [...players];
+
+        if (currentQuestion.type === 'project') {
+          for (const p of updatedPlayers) {
+            if (p.currentAnswer === currentQuestion.answer) {
+              const speedBonus = p.answeredAt ? Math.max(10, Math.floor(40 - (p.answeredAt - gameState.questionStartTime) / 1000)) : 0;
+              const pointsEarned = 100 + speedBonus;
+              
+              await playersColRef.doc(p.id).update({
+                score: (p.score || 0) + pointsEarned
+              });
+            }
+          }
+        } else {
+          const voteCounts = {};
+          updatedPlayers.forEach(p => {
+            if (p.currentAnswer) {
+              voteCounts[p.currentAnswer] = (voteCounts[p.currentAnswer] || 0) + 1;
+            }
+          });
+
+          let topVotedPerson = "";
+          let maxVotes = 0;
+          Object.entries(voteCounts).forEach(([person, count]) => {
+            if (count > maxVotes) {
+              maxVotes = count;
+              topVotedPerson = person;
+            }
+          });
+
+          if (topVotedPerson) {
+            for (const p of updatedPlayers) {
+              if (p.currentAnswer === topVotedPerson) {
+                await playersColRef.doc(p.id).update({
+                  score: (p.score || 0) + 120
+                });
+              }
+            }
+          }
+        }
+
+        await gameDocRef.update({
+          status: 'showing_answer'
+        });
+      };
+
+      const nextQuestion = async () => {
+        if (!gameState) return;
+        const nextIdx = (gameState.currentQuestionIndex ?? 0) + 1;
+
+        if (nextIdx < QUIZ_QUESTIONS.length) {
+          sfx.playJoin();
+          for (const p of players) {
+            await playersColRef.doc(p.id).update({
+              currentAnswer: ""
+            });
+          }
+
+          await gameDocRef.update({
+            currentQuestionIndex: nextIdx,
+            status: 'playing',
+            questionStartTime: Date.now()
+          });
+        } else {
+          sfx.playFanfare();
+          await gameDocRef.update({
+            status: 'leaderboard'
+          });
+        }
+      };
+
+      const resetGameToSetup = async () => {
+        await gameDocRef.update({
+          status: 'setup',
+          currentQuestionIndex: 0
+        });
+        await clearPlayers();
+      };
+
+      const origin = window.location.origin;
+      const rawJoinUrl = `${origin}${window.location.pathname}?role=player`;
+      const joinUrl = joinLinkOverride.trim() !== "" ? joinLinkOverride.trim() : rawJoinUrl;
+
+      // Scan-optimized scannable QR Code
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&color=1c1917&bgcolor=ffffff&data=${encodeURIComponent(joinUrl)}`;
+
+      if (loading || !gameState) {
+        return (
+          <div className="min-h-screen bg-stone-950 flex flex-col justify-center items-center text-white">
+            <RefreshCw className="w-8 h-8 text-amber-500 animate-spin mb-4" />
+            <p className="text-sm font-mono tracking-widest text-stone-400">CONNECTING REALTIME HUB DATABASE...</p>
+          </div>
+        );
+      }
+
+      return (
+        <div className="min-h-screen bg-stone-950 text-stone-100 p-6 md:p-12 relative overflow-hidden flex flex-col justify-between font-sans">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1c1917_1px,transparent_1px),linear-gradient(to_bottom,#1c1917_1px,transparent_1px)] bg-[size:5rem_5rem] opacity-20" />
+
+          <header className="z-10 flex justify-between items-center border-b border-stone-800 pb-4">
+            <div className="flex items-center gap-4">
+              <div className="bg-amber-500 text-stone-950 font-black p-2.5 rounded-lg font-serif">JW</div>
+              <div>
+                <span className="text-xs text-amber-500 tracking-widest font-mono uppercase">Joyce Wang Studio Quiz</span>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl font-bold tracking-wider font-serif text-white uppercase">LIVE HOST PORTAL</h1>
+                  <span className="bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] text-emerald-400 font-mono tracking-wider uppercase">Live Database Online</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setIsMuted(!isMuted)} 
+                className="p-2 border border-stone-800 rounded-lg hover:bg-stone-900 text-stone-400 hover:text-white"
+              >
+                {isMuted ? <VolumeX /> : <Volume2 />}
+              </button>
+              <button 
+                onClick={goBack} 
+                className="text-xs text-stone-400 hover:text-white px-3 py-2 border border-stone-800 rounded-lg font-mono hover:bg-stone-900 transition-colors"
+              >
+                QUIT HOSTING
+              </button>
+            </div>
+          </header>
+
+          <main className="z-10 my-8 flex-1 flex flex-col justify-center">
+            {gameState?.status === 'setup' && (
+              <div className="max-w-4xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
+                  <span className="text-xs font-mono text-amber-500 tracking-widest uppercase">Step 01 / Pre-Game Setup</span>
+                  <h2 className="text-4xl font-light text-white leading-tight font-serif">
+                    Configure Your <br />
+                    <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">Studio Cast</span>
+                  </h2>
+                  <p className="text-stone-400 text-sm leading-relaxed">
+                    Register the names of your active studio members (designers, directors, developers). This constructs the multi-choice voting lists on players' phone controllers for the "Most Likely To" rounds.
+                  </p>
+
+                  <div className="bg-stone-900 border border-stone-800 p-5 rounded-2xl space-y-4">
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Rachel" 
+                        value={newMemberName} 
+                        onChange={e => setNewMemberName(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && handleAddMember()}
+                        className="flex-1 bg-stone-950 border border-stone-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      />
+                      <button 
+                        onClick={handleAddMember}
+                        className="bg-amber-500 hover:bg-amber-600 text-stone-950 px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-1.5 transition-colors"
+                      >
+                        <Plus /> Add
+                      </button>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-2">
+                      {customMembers.map((name, idx) => (
+                        <span 
+                          key={idx} 
+                          className="inline-flex items-center gap-1.5 px-3 py-1 bg-stone-950 text-amber-400 text-xs font-mono rounded-lg border border-amber-500/10"
+                        >
+                          {name}
+                          <button onClick={() => handleRemoveMember(name)} className="text-stone-500 hover:text-red-400 transition-colors">
+                            <Trash2 />
+                          </button>
+                        </span>
+                      ))}
+                      {customMembers.length === 0 && (
+                        <p className="text-xs text-stone-500 italic py-2">Roster is empty. Add your studio members above to populate the "Most Likely To" options!</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={createLobby}
+                    disabled={customMembers.length === 0}
+                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 disabled:opacity-40 disabled:pointer-events-none hover:from-amber-600 hover:to-amber-700 text-stone-950 font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-lg font-serif"
+                  >
+                    Create Game Lobby <ChevronRight />
+                  </button>
+                </div>
+
+                <div className="hidden lg:block bg-stone-900/50 border border-stone-800 p-8 rounded-3xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full filter blur-2xl" />
+                  <h3 className="text-lg font-serif font-semibold text-amber-500 mb-4 uppercase tracking-widest">Quiz Highlights</h3>
+                  <ul className="space-y-4 text-xs text-stone-300">
+                    <li className="flex gap-3">
+                      <div className="p-1 bg-amber-500/10 rounded text-amber-500 h-fit"><Info /></div>
+                      <p><strong>15 Project Trivia:</strong> High-end questions detailing iconic materials, geometric fixtures, and spatial storytelling of Joyce Wang design masterpieces.</p>
+                    </li>
+                    <li className="flex gap-3">
+                      <div className="p-1 bg-amber-500/10 rounded text-amber-500 h-fit"><Users /></div>
+                      <p><strong>15 Peer Votes:</strong> Dynamic voting targeting customized member names. Tally calculates majority consensus in real-time!</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {gameState?.status === 'lobby' && (
+              <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div className="lg:col-span-5 flex flex-col items-center text-center bg-stone-900 border border-stone-800 p-6 rounded-3xl relative">
+                  <div className="absolute top-3 left-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 py-1 rounded-lg text-[10px] font-mono uppercase tracking-wider">
+                    JOIN PORTAL
+                  </div>
+
+                  <div className="bg-white p-4 rounded-2xl shadow-2xl mt-4 border border-stone-700">
+                    <img 
+                      src={qrCodeUrl} 
+                      alt="Scan to join" 
+                      className="w-56 h-56 md:w-64 md:h-64 object-contain"
+                    />
+                  </div>
+
+                  <div className="mt-6 w-full space-y-3">
+                    <p className="text-xs font-mono text-stone-400 uppercase tracking-widest">Scan QR or browse to:</p>
+                    
+                    <div className="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2 text-left">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] font-mono text-amber-500 tracking-wider">CONNECT URL</span>
+                        <button 
+                          onClick={() => setShowOverrideInput(!showOverrideInput)}
+                          className="text-[10px] text-stone-400 hover:text-amber-400 flex items-center gap-1 font-mono uppercase"
+                        >
+                          <Edit2 /> {showOverrideInput ? "Close Edit" : "Edit Link"}
+                        </button>
+                      </div>
+
+                      {showOverrideInput ? (
+                        <div className="space-y-2">
+                          <p className="text-[10px] text-stone-500 leading-tight">Paste your public web app preview link here to regenerate the QR code dynamically:</p>
+                          <input 
+                            type="text"
+                            value={joinLinkOverride}
+                            placeholder={rawJoinUrl}
+                            onChange={(e) => setJoinLinkOverride(e.target.value)}
+                            className="w-full bg-stone-900 border border-stone-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
+                          />
+                        </div>
+                      ) : (
+                        <p className="text-xs font-semibold text-amber-500 font-mono select-all truncate">
+                          {joinUrl}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-7 space-y-6">
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <span className="text-xs font-mono text-amber-500 tracking-widest uppercase">Live Lobby Status</span>
+                      <h2 className="text-3xl font-serif font-light text-white mt-1">Waiting for Designers...</h2>
+                    </div>
+                    <div className="bg-stone-900 border border-stone-800 px-4 py-2 rounded-xl text-right">
+                      <span className="text-xs text-stone-500 font-mono block">PLAYERS READY</span>
+                      <span className="text-2xl font-bold text-amber-500 font-mono">{players.length}</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-stone-900/40 border border-stone-800/80 rounded-2xl p-6 min-h-[16rem] max-h-[18rem] overflow-y-auto">
+                    {players.length === 0 ? (
+                      <div className="h-full flex flex-col justify-center items-center text-stone-500 gap-3 py-12">
+                        <UserPlus />
+                        <p className="text-sm font-mono tracking-wider">Waiting for teammates to connect...</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {players.map((p, idx) => (
+                          <div 
+                            key={idx} 
+                            className="flex items-center gap-2.5 bg-stone-950 border border-stone-800 p-3.5 rounded-xl shadow-md transform hover:-translate-y-0.5 transition-all"
+                          >
+                            <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping" />
+                            <span className="text-xs font-bold text-stone-200 truncate font-mono uppercase tracking-wider">{p.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-4">
+                    <button 
+                      onClick={clearPlayers}
+                      className="px-6 py-4 border border-red-500/20 text-red-400 hover:bg-red-950/20 rounded-xl text-sm font-mono tracking-wider transition-colors"
+                    >
+                      CLEAR ROSTER
+                    </button>
+                    <button 
+                      onClick={startGame}
+                      disabled={players.length === 0}
+                      className="flex-1 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:hover:bg-amber-500 text-stone-950 font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-md tracking-wider uppercase font-serif"
+                    >
+                      <Play /> Start Studio Battle
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {gameState?.status === 'playing' && (() => {
+              const qIndex = gameState?.currentQuestionIndex ?? 0;
+              const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+              const answeredCount = players.filter(p => p.currentAnswer !== undefined && p.currentAnswer !== "").length;
+
+              return (
+                <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+                  <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono text-amber-500 tracking-widest uppercase bg-amber-950/20 border border-amber-500/20 px-3 py-1 rounded-full">
+                          QUESTION {qIndex + 1} OF 30
+                        </span>
+                        <span className={`text-xs font-mono px-3 py-1 rounded-full border ${q.type === 'project' ? 'border-indigo-500/20 text-indigo-400 bg-indigo-950/20' : 'border-emerald-500/20 text-emerald-400 bg-emerald-950/20'}`}>
+                          {q.type === 'project' ? 'STUDIO MASTERPIECE TRIVIA' : 'STUDIO PEOPLE POLL'}
+                        </span>
+                      </div>
+                      <h2 className="text-2xl md:text-4xl font-serif text-white leading-snug mt-4">
+                        {q.type === 'project' ? q.question : `Who is most likely ${q.prompt}`}
+                      </h2>
+                    </div>
+
+                    {q.type === 'project' ? (
+                      <ProjectIllustration type={q.svgType} />
+                    ) : (
+                      <div className="w-full h-48 md:h-64 rounded-xl flex flex-col items-center justify-center bg-stone-900 border border-emerald-500/20 relative overflow-hidden">
+                        <Users />
+                        <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Office Consensus Voting Active</span>
+                        <p className="text-stone-500 text-xs mt-2 max-w-sm text-center">Players choose custom designers. Aligning with the majority counts as consensus and wins massive score!</p>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between bg-stone-900/80 border border-stone-800 p-4 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse" />
+                        <span className="text-xs font-mono text-stone-300">
+                          SUBMISSIONS: <strong className="text-amber-400 text-sm">{answeredCount}</strong> OF <strong className="text-stone-400 text-sm">{players.length}</strong>
+                        </span>
+                      </div>
+
+                      <button 
+                        onClick={revealAnswers}
+                        className="bg-amber-500 hover:bg-amber-600 text-stone-950 px-4 py-2 rounded-lg text-xs font-mono font-bold tracking-widest uppercase transition-all"
+                      >
+                        REVEAL NOW
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-5 flex flex-col justify-between bg-stone-900/50 border border-stone-800/80 p-8 rounded-3xl relative">
+                    <div className="flex flex-col items-center justify-center my-6">
+                      <div className="relative w-32 h-32 flex items-center justify-center">
+                        <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="45" fill="none" stroke="#262524" strokeWidth="6" />
+                          <circle 
+                            cx="50" 
+                            cy="50" 
+                            r="45" 
+                            fill="none" 
+                            stroke="#f59e0b" 
+                            strokeWidth="6" 
+                            strokeDasharray="283"
+                            strokeDashoffset={283 - (283 * timerLeft) / 25}
+                            className="transition-all duration-1000 ease-linear"
+                          />
+                        </svg>
+                        <div className="text-center">
+                          <span className="text-4xl font-mono font-bold text-white">{timerLeft}</span>
+                          <span className="block text-[9px] font-mono text-stone-500 uppercase tracking-widest">SECONDS</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 mt-4">
+                      {q.type === 'project' ? (
+                        q.options.map((opt, idx) => {
+                          const labels = ['A', 'B', 'C', 'D'];
+                          return (
+                            <div key={idx} className="flex items-center gap-3 bg-stone-950 border border-stone-800 p-4 rounded-xl">
+                              <span className="w-7 h-7 flex items-center justify-center bg-stone-900 border border-stone-800 text-amber-500 font-mono rounded-lg text-xs font-semibold">{labels[idx]}</span>
+                              <span className="text-sm font-semibold text-stone-200">{opt}</span>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className="p-4 bg-stone-950 border border-stone-800 rounded-xl text-center">
+                          <p className="text-xs text-emerald-400 font-mono tracking-widest uppercase mb-2">DYNAMIC VOTE LIST</p>
+                          <p className="text-stone-500 text-xs">Registered studio members are populated dynamically on players' screens.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {gameState?.status === 'showing_answer' && (() => {
+              const qIndex = gameState?.currentQuestionIndex ?? 0;
+              const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+              
+              const voteStats = {};
+              players.forEach(p => {
+                if (p.currentAnswer) {
+                  voteStats[p.currentAnswer] = (voteStats[p.currentAnswer] || 0) + 1;
+                }
+              });
+
+              return (
+                <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+                  <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
+                    <div>
+                      <span className="text-xs font-mono text-emerald-400 tracking-widest uppercase bg-emerald-950/20 border border-emerald-500/20 px-3 py-1 rounded-full">
+                        REVEAL & EXPLANATION
+                      </span>
+                      {q.type === 'project' ? (
+                        <div className="space-y-2 mt-4">
+                          <span className="text-xs text-stone-500 font-mono uppercase block">CORRECT ANSWER IS:</span>
+                          <h2 className="text-4xl font-bold font-serif text-amber-400">{q.answer}</h2>
+                          <p className="text-stone-300 text-sm leading-relaxed mt-4 bg-stone-900/50 border border-stone-800 p-4 rounded-xl">
+                            {q.explanation}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2 mt-4">
+                          <span className="text-xs text-stone-500 font-mono uppercase block">THE STUDIO DECLARES:</span>
+                          <h2 className="text-3xl font-bold font-serif text-emerald-400 leading-snug">
+                            {Object.keys(voteStats).length > 0 
+                              ? `Consensus Winner: ${Object.entries(voteStats).sort((a,b)=>b[1]-a[1])[0][0]}`
+                              : "No consensus. No votes recorded!"}
+                          </h2>
+                          <p className="text-stone-400 text-xs mt-1">Everyone voting for the majority consensus scores an extra 120 points!</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {q.type === 'project' && <ProjectIllustration type={q.svgType} />}
+                  </div>
+
+                  <div className="lg:col-span-5 flex flex-col justify-between bg-stone-900/50 border border-stone-800/80 p-8 rounded-3xl">
+                    <div>
+                      <h3 className="text-md font-serif text-white tracking-wider mb-6 uppercase border-b border-stone-800 pb-2">Response Breakdown</h3>
+                      
+                      <div className="space-y-4">
+                        {q.type === 'project' ? (
+                          q.options.map((opt, idx) => {
+                            const count = players.filter(p => p.currentAnswer === opt).length;
+                            const percentage = players.length > 0 ? (count / players.length) * 100 : 0;
+                            const isCorrect = opt === q.answer;
+
+                            return (
+                              <div key={idx} className="space-y-1">
+                                <div className="flex justify-between text-xs font-mono">
+                                  <span className={isCorrect ? 'text-amber-400 font-bold' : 'text-stone-400'}>
+                                    {opt} {isCorrect && '✓'}
+                                  </span>
+                                  <span className="text-stone-300">{count} ({Math.round(percentage)}%)</span>
+                                </div>
+                                <div className="w-full bg-stone-950 h-2 rounded-full overflow-hidden border border-stone-800">
+                                  <div 
+                                    className={`h-full rounded-full transition-all duration-1000 ${isCorrect ? 'bg-amber-500' : 'bg-stone-700'}`}
+                                    style={{ width: `${percentage}%` }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          Object.keys(voteStats).length > 0 ? (
+                            Object.entries(voteStats).sort((a,b) => b[1] - a[1]).map(([name, count], idx) => {
+                              const percentage = players.length > 0 ? (count / players.length) * 100 : 0;
+                              return (
+                                <div key={idx} className="space-y-1">
+                                  <div className="flex justify-between text-xs font-mono">
+                                    <span className="text-stone-200 font-medium">{name}</span>
+                                    <span className="text-emerald-400">{count} votes ({Math.round(percentage)}%)</span>
+                                  </div>
+                                  <div className="w-full bg-stone-950 h-2 rounded-full overflow-hidden border border-stone-800">
+                                    <div 
+                                      className="h-full rounded-full bg-emerald-500 transition-all duration-1000"
+                                      style={{ width: `${percentage}%` }}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <p className="text-xs text-stone-500 italic text-center py-6">No answers submitted.</p>
+                          )
+                        )}
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={nextQuestion}
+                      className="w-full bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold py-4 rounded-xl mt-8 transition-all flex items-center justify-center gap-2 text-sm tracking-widest uppercase font-serif"
+                    >
+                      {qIndex + 1 < QUIZ_QUESTIONS.length ? 'Next Question' : 'Show Podium Finalists'} <ChevronRight />
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {gameState?.status === 'leaderboard' && (() => {
+              const rankedPlayers = [...players].sort((a, b) => (b.score || 0) - (a.score || 0));
+              const gold = rankedPlayers[0];
+              const silver = rankedPlayers[1];
+              const bronze = rankedPlayers[2];
+
+              return (
+                <div className="max-w-4xl mx-auto w-full space-y-12">
+                  <div className="text-center space-y-2">
+                    <span className="text-xs font-mono text-amber-500 tracking-widest uppercase">CONGRATULATIONS ARCHITECTS</span>
+                    <h2 className="text-5xl font-serif font-light text-white leading-tight">THE GRAND PODIUM</h2>
+                    <p className="text-stone-400 text-sm">Honoring high-design mastery and studio intuition.</p>
+                  </div>
+
+                  <div className="flex items-end justify-center gap-4 pt-16 border-b border-stone-800 pb-8">
+                    {silver && (
+                      <div className="flex flex-col items-center">
+                        <div className="text-center mb-2">
+                          <span className="text-sm font-bold font-mono text-stone-300 block max-w-28 truncate">{silver.name}</span>
+                          <span className="text-xs text-stone-500 font-mono">{silver.score || 0} pts</span>
+                        </div>
+                        <div className="w-28 bg-gradient-to-t from-stone-900 to-stone-800 h-32 rounded-t-xl flex flex-col items-center justify-center border-t border-stone-600">
+                          <span className="text-4xl font-extrabold text-stone-400">2</span>
+                          <span className="text-[10px] text-stone-500 font-mono uppercase tracking-widest">SILVER</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {gold && (
+                      <div className="flex flex-col items-center scale-110 -translate-y-4">
+                        <Award />
+                        <div className="text-center mb-2">
+                          <span className="text-sm font-bold font-mono text-amber-300 block max-w-28 truncate">{gold.name}</span>
+                          <span className="text-xs text-amber-400 font-mono font-bold">{gold.score || 0} pts</span>
+                        </div>
+                        <div className="w-32 bg-gradient-to-t from-stone-900 to-stone-800 h-44 rounded-t-xl flex flex-col items-center justify-center border-t-2 border-amber-500 relative shadow-2xl shadow-amber-950/20">
+                          <span className="text-5xl font-black text-amber-500">1</span>
+                          <span className="text-[10px] text-amber-400 font-mono uppercase tracking-widest">GOLD</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {bronze && (
+                      <div className="flex flex-col items-center">
+                        <div className="text-center mb-2">
+                          <span className="text-sm font-bold font-mono text-orange-300 block max-w-28 truncate">{bronze.name}</span>
+                          <span className="text-xs text-stone-500 font-mono">{bronze.score || 0} pts</span>
+                        </div>
+                        <div className="w-28 bg-gradient-to-t from-stone-900 to-stone-800 h-24 rounded-t-xl flex flex-col items-center justify-center border-t border-orange-700/50">
+                          <span className="text-3xl font-extrabold text-orange-600">3</span>
+                          <span className="text-[10px] text-stone-500 font-mono uppercase tracking-widest">BRONZE</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="max-w-2xl mx-auto space-y-2 max-h-48 overflow-y-auto pr-2">
+                    {rankedPlayers.slice(3).map((p, idx) => (
+                      <div key={idx} className="flex justify-between items-center bg-stone-900/60 border border-stone-800/80 px-5 py-3 rounded-xl">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-mono text-stone-500">#{idx + 4}</span>
+                          <span className="text-sm font-bold text-stone-200 font-mono uppercase">{p.name}</span>
+                        </div>
+                        <span className="text-xs font-mono text-amber-500">{p.score || 0} PTS</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="text-center">
+                    <button 
+                      onClick={resetGameToSetup}
+                      className="bg-stone-900 border border-stone-800 hover:bg-stone-800 hover:border-amber-500/20 px-8 py-3.5 rounded-xl text-xs font-mono tracking-widest uppercase transition-colors"
+                    >
+                      RESET & FRESH RESTART
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+          </main>
+
+          <footer className="z-10 border-t border-stone-900 pt-4 flex justify-between items-center text-xs text-stone-500">
+            <p>Joyce Wang Studio Realtime Event Service • v2.2</p>
+            {gameState?.status !== 'setup' && (
+              <p className="font-mono text-amber-500 font-semibold">SESSION ID: {appId}</p>
+            )}
+          </footer>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 3. PLAYER CONTROLLER SCREEN (MOBILE CONTROLLER)
+    // ==========================================
+    function PlayerScreen({ user, isMuted, setIsMuted, goBack }) {
+      const [playerId, setPlayerId] = useState(null);
+      const [playerName, setPlayerName] = useState("");
+      const [joined, setJoined] = useState(false);
+      const [myPlayerDoc, setMyPlayerDoc] = useState(null);
+      const [gameState, setGameState] = useState(null);
+      const [submitting, setSubmitting] = useState(false);
+
+      const gameDocRef = db.doc(`artifacts/${appId}/public/data/games/lobby`);
+
+      useEffect(() => {
+        if (!user) return;
+        setPlayerId(user.uid);
+
+        const unsubGame = gameDocRef.onSnapshot((snapshot) => {
+          if (snapshot.exists) {
+            setGameState(snapshot.data());
+          }
+        }, (err) => {
+          console.error("Player lobby sync error:", err);
+        });
+
+        return () => unsubGame();
+      }, [user]);
+
+      useEffect(() => {
+        if (!user || !playerId) return;
+
+        const myDocRef = db.doc(`artifacts/${appId}/public/data/players/${playerId}`);
+        const unsubMyPlayer = myDocRef.onSnapshot((snapshot) => {
+          if (snapshot.exists) {
+            setMyPlayerDoc(snapshot.data());
+            setJoined(true);
+          } else {
+            setJoined(false);
+          }
+        });
+
+        return () => unsubMyPlayer();
+      }, [user, playerId]);
+
+      const handleJoinGame = async (e) => {
+        e.preventDefault();
+        if (!playerName.trim() || !playerId) return;
+
+        setSubmitting(true);
+        sfx.playJoin();
+
+        try {
+          const myDocRef = db.doc(`artifacts/${appId}/public/data/players/${playerId}`);
+          await myDocRef.set({
+            name: playerName.trim().toUpperCase(),
+            score: 0,
+            currentAnswer: "",
+            joinedAt: Date.now()
+          });
+          setJoined(true);
+        } catch (err) {
+          console.error("Error writing player doc:", err);
+        } finally {
+          setSubmitting(false);
+        }
+      };
+
+      const selectOption = async (optValue) => {
+        if (!playerId || !gameState || myPlayerDoc?.currentAnswer) return;
+
+        sfx.playSuccess();
+        try {
+          const myDocRef = db.doc(`artifacts/${appId}/public/data/players/${playerId}`);
+          await myDocRef.update({
+            currentAnswer: optValue,
+            answeredAt: Date.now()
+          });
+        } catch (err) {
+          console.error("Error submitting answer:", err);
+        }
+      };
+
+      if (!gameState) {
+        return (
+          <div className="min-h-screen bg-stone-950 flex flex-col justify-center items-center text-stone-100 p-6">
+            <RefreshCw className="w-8 h-8 text-amber-500 animate-spin mb-4" />
+            <p className="text-sm font-mono tracking-widest text-stone-400 text-center">WAITING FOR HOST TO CONFIGURE LOBBY...</p>
+          </div>
+        );
+      }
+
+      if (!joined) {
+        return (
+          <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-6 font-sans relative">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,#1c1917_0%,transparent_100%)] opacity-40" />
+
+            <header className="z-10 flex justify-between items-center border-b border-stone-800 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-500 text-stone-950 font-bold px-2 py-1 rounded text-xs font-serif">JW</span>
+                <span className="text-xs font-serif font-bold text-white uppercase tracking-wider">Controller Screen</span>
+              </div>
+              <button onClick={goBack} className="text-[10px] text-stone-500 hover:text-white font-mono uppercase tracking-widest">
+                Back
+              </button>
+            </header>
+
+            <main className="z-10 flex-1 flex flex-col justify-center max-w-md mx-auto w-full py-12">
+              <div className="space-y-6 text-center">
+                <div className="w-16 h-16 bg-amber-500/10 border border-amber-500/30 text-amber-500 flex items-center justify-center rounded-2xl mx-auto">
+                  <QrCodeIcon />
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-serif text-white">Join the Live Quiz</h2>
+                  <p className="text-stone-400 text-xs">Enter your professional nickname or full name to represent yourself in the live design showdown.</p>
+                </div>
+
+                <form onSubmit={handleJoinGame} className="space-y-4 pt-4">
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-[10px] font-mono text-amber-500 uppercase tracking-widest">NICKNAME / NAME</label>
+                    <input 
+                      type="text"
+                      required
+                      placeholder="e.g. SONAL W."
+                      maxLength={15}
+                      value={playerName}
+                      onChange={e => setPlayerName(e.target.value)}
+                      className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={submitting || !playerName.trim()}
+                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-amber-500/10 flex items-center justify-center gap-2 font-serif text-xs tracking-widest"
+                  >
+                    {submitting ? 'Connecting...' : 'CONNECT CONTROLLER'} <ArrowRight />
+                  </button>
+                </form>
+              </div>
+            </main>
+
+            <footer className="z-10 text-center text-[10px] text-stone-600">
+              Joyce Wang Studio • Secure real-time mobile websocket endpoint
+            </footer>
+          </div>
+        );
+      }
+
+      if (gameState?.status === 'lobby' || gameState?.status === 'setup') {
+        return (
+          <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-6 font-sans relative">
+            <header className="flex justify-between items-center border-b border-stone-800 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-500 text-stone-950 font-bold px-2 py-0.5 rounded text-xs font-serif">JW</span>
+                <span className="text-xs font-serif font-bold text-white uppercase tracking-wider">{myPlayerDoc?.name}</span>
+              </div>
+              <span className="text-[10px] text-emerald-500 bg-emerald-950/20 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-mono uppercase tracking-widest">
+                CONNECTED
+              </span>
+            </header>
+
+            <main className="flex-1 flex flex-col justify-center text-center max-w-sm mx-auto gap-4">
+              <div className="w-16 h-16 bg-stone-900 border border-stone-800 rounded-2xl flex items-center justify-center text-amber-500 mx-auto animate-pulse">
+                <Clock />
+              </div>
+              <h2 className="text-xl font-serif text-white font-semibold">You're Checked In!</h2>
+              <p className="text-stone-400 text-xs">Keep your phone open. When the host commences the game, question answer options will instantly materialize below.</p>
+              <div className="bg-stone-900/60 border border-stone-800 rounded-xl p-4 mt-4 text-left">
+                <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest block mb-1">YOUR PROFILE</span>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-stone-300 font-bold font-mono text-sm">{myPlayerDoc?.name}</span>
+                  <span className="text-amber-500 font-mono">0 POINTS</span>
+                </div>
+              </div>
+            </main>
+
+            <footer className="text-center text-[10px] text-stone-600">
+              Sync active on room: {appId}
+            </footer>
+          </div>
+        );
+      }
+
+      if (gameState?.status === 'playing') {
+        const qIndex = gameState?.currentQuestionIndex ?? 0;
+        const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+        const hasAnswered = myPlayerDoc?.currentAnswer !== "";
+
+        return (
+          <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-6 font-sans relative">
+            <header className="flex justify-between items-center border-b border-stone-800 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold text-amber-500 bg-amber-950/20 px-2 py-0.5 rounded border border-amber-500/10">Q-{q.id}</span>
+                <span className="text-xs font-mono font-bold text-stone-300 truncate max-w-28 uppercase">{myPlayerDoc?.name}</span>
+              </div>
+              <div className="text-right">
+                <span className="text-[9px] text-stone-500 font-mono block">SCORE</span>
+                <span className="text-sm font-mono font-bold text-amber-500">{myPlayerDoc?.score || 0}</span>
+              </div>
+            </header>
+
+            <main className="flex-1 flex flex-col justify-center py-6">
+              {hasAnswered ? (
+                <div className="text-center space-y-4 max-w-sm mx-auto">
+                  <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 flex items-center justify-center rounded-2xl mx-auto animate-bounce">
+                    <CheckCircle />
+                  </div>
+                  <h3 className="text-xl font-bold text-white font-serif">Answer Locked In!</h3>
+                  <p className="text-xs text-stone-400">Your selection has been successfully committed to the studio cloud database. Await the host's review!</p>
+                  
+                  <div className="p-4 bg-stone-900 border border-stone-800 rounded-xl text-left">
+                    <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest block mb-1">YOUR LOCKED SELECTION</span>
+                    <span className="text-sm font-bold text-amber-500 font-mono">{myPlayerDoc.currentAnswer}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <span className="text-xs text-amber-500 font-mono tracking-widest uppercase block mb-1">CHOOSE YOUR ANSWER</span>
+                    <p className="text-stone-300 text-sm font-medium">Select correct project option or vote for a colleague:</p>
+                  </div>
+
+                  {q.type === 'project' ? (
+                    <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
+                      {q.options.map((opt, idx) => {
+                        const letters = ['A', 'B', 'C', 'D'];
+                        return (
+                          <button 
+                            key={idx}
+                            onClick={() => selectOption(opt)}
+                            className="w-full text-left flex items-center gap-4 bg-stone-900 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/40 p-4 rounded-xl transition-all active:scale-95 duration-100"
+                          >
+                            <span className="w-8 h-8 flex items-center justify-center bg-stone-950 border border-stone-800 text-amber-500 rounded-lg text-xs font-bold font-mono">
+                              {letters[idx]}
+                            </span>
+                            <span className="text-sm font-bold text-stone-200">{opt}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="space-y-3 max-w-md mx-auto">
+                      <span className="text-[10px] text-emerald-400 font-mono uppercase tracking-widest block text-center mb-1">SELECT STUDIO MEMBER:</span>
+                      <div className="grid grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+                        {(gameState?.membersList || []).map((name, idx) => (
+                          <button 
+                            key={idx}
+                            onClick={() => selectOption(name)}
+                            className="bg-stone-900 hover:bg-stone-800 border border-stone-800 hover:border-emerald-500/30 p-3.5 rounded-xl text-xs font-bold font-mono text-stone-300 hover:text-emerald-400 text-center truncate uppercase tracking-wider active:scale-95 duration-100"
+                          >
+                            {name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </main>
+
+            <footer className="text-center text-[10px] text-stone-600">
+              Watch main presenter screen for correct answers!
+            </footer>
+          </div>
+        );
+      }
+
+      if (gameState?.status === 'showing_answer') {
+        const qIndex = gameState?.currentQuestionIndex ?? 0;
+        const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+        const isCorrect = q.type === 'project' && myPlayerDoc?.currentAnswer === q.answer;
+
+        return (
+          <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-6 font-sans relative">
+            <header className="flex justify-between items-center border-b border-stone-800 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-500 text-stone-950 font-bold px-2 py-0.5 rounded text-xs font-serif">JW</span>
+                <span className="text-xs font-serif font-bold text-white uppercase tracking-wider">{myPlayerDoc?.name}</span>
+              </div>
+              <div className="text-right">
+                <span className="text-[9px] text-stone-500 font-mono block">LATEST SCORE</span>
+                <span className="text-sm font-mono font-bold text-amber-500">{myPlayerDoc?.score || 0}</span>
+              </div>
+            </header>
+
+            <main className="flex-1 flex flex-col justify-center text-center max-w-sm mx-auto space-y-6">
+              {q.type === 'project' ? (
+                isCorrect ? (
+                  <div className="space-y-4">
+                    <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 flex items-center justify-center rounded-2xl mx-auto">
+                      <Trophy />
+                    </div>
+                    <h2 className="text-2xl font-serif text-emerald-400 font-bold">CORRECT GUESS!</h2>
+                    <p className="text-xs text-stone-300">You earned points for this speed evaluation of Joyce Wang designs.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="w-16 h-16 bg-red-500/10 border border-red-500/30 text-red-500 flex items-center justify-center rounded-2xl mx-auto">
+                      <Info />
+                    </div>
+                    <h2 className="text-2xl font-serif text-red-400 font-bold">INCORRECT GUESS</h2>
+                    <p className="text-xs text-stone-400">The correct design project was <strong className="text-amber-500">{q.answer}</strong>.</p>
+                  </div>
+                )
+              ) : (
+                <div className="space-y-4">
+                  <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 flex items-center justify-center rounded-2xl mx-auto">
+                    <Users />
+                  </div>
+                  <h2 className="text-2xl font-serif text-emerald-400 font-bold">VOTE TABULATED!</h2>
+                  <p className="text-xs text-stone-300">If your choice aligned with the majority of the studio, you gained bonus consensus points!</p>
+                </div>
+              )}
+
+              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5 text-left space-y-3">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-stone-400 font-mono uppercase">YOUR SUBMISSION:</span>
+                  <span className="text-white font-bold font-mono">{myPlayerDoc?.currentAnswer || "N/A"}</span>
+                </div>
+                {q.type === 'project' && (
+                  <div className="flex justify-between items-center text-xs pt-2 border-t border-stone-800">
+                    <span className="text-stone-400 font-mono uppercase">CORRECT PROJECT:</span>
+                    <span className="text-amber-500 font-bold font-mono">{q.answer}</span>
+                  </div>
+                )}
+              </div>
+            </main>
+
+            <footer className="text-center text-[10px] text-stone-600">
+              Prepare for the next question on the live screen!
+            </footer>
+          </div>
+        );
+      }
+
+      if (gameState?.status === 'leaderboard') {
+        return (
+          <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-6 font-sans relative">
+            <header className="flex justify-between items-center border-b border-stone-800 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-500 text-stone-950 font-bold px-2 py-0.5 rounded text-xs font-serif">JW</span>
+                <span className="text-xs font-serif font-bold text-white uppercase tracking-wider">{myPlayerDoc?.name}</span>
+              </div>
+            </header>
+
+            <main className="flex-1 flex flex-col justify-center text-center max-w-sm mx-auto space-y-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 text-stone-950 flex items-center justify-center rounded-2xl mx-auto shadow-lg shadow-amber-500/10">
+                <Award />
+              </div>
+              <h2 className="text-2xl font-serif text-white font-bold">QUIZ COMPLETED!</h2>
+              <p className="text-xs text-stone-400">Thanks for participating! Look up at the podium presentation screen to locate your overall designer rank!</p>
+
+              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5 text-left">
+                <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest block mb-1">YOUR FINAL RECORD</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-stone-300 font-bold font-mono">{myPlayerDoc?.name}</span>
+                  <span className="text-amber-500 font-bold font-mono text-lg">{myPlayerDoc?.score || 0} PTS</span>
+                </div>
+              </div>
+            </main>
+
+            <footer className="text-center text-[10px] text-stone-600">
+              Joyce Wang Studio • Creative Office Culture Solutions
+            </footer>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    // Mount React App
+    const rootElement = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<App />);
+  </script>
+</body>
+</html>
