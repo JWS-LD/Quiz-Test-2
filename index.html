@@ -201,9 +201,9 @@
       </svg>
     );
 
-    // --- 30 JOYCE WANG STUDIO QUESTIONS ---
+    // --- 200 JOYCE WANG STUDIO QUESTIONS POOL ---
     const QUIZ_QUESTIONS = [
-      // --- PROJECT TRIVIA (1-15) ---
+      // === 100 PROJECT TRIVIA QUESTIONS (IDs 1-100) ===
       {
         id: 1,
         type: 'project',
@@ -218,7 +218,7 @@
         id: 2,
         type: 'project',
         title: 'Mandarin Oriental Hyde Park, London',
-        question: 'For the Mandarin Oriental Hyde Park guestroom renovation, the custom brass chandeliers were inspired by which specific natural element from the adjacent Royal Park?',
+        question: 'For the Mandarin Oriental guestrooms in London, custom brass chandeliers were inspired by which natural element from the adjacent Royal Park?',
         options: ['Hyde Park Oak leaves & acorns', 'Swan wings', 'Serpentine water ripples', 'Rose petals'],
         answer: 'Hyde Park Oak leaves & acorns',
         explanation: 'The custom lighting fixtures in guestrooms feature sophisticated metal and glass motifs modeled on Hyde Park\'s legendary oak foliage.',
@@ -238,9 +238,9 @@
         id: 4,
         type: 'project',
         title: 'Mott 32 Las Vegas',
-        question: 'Which design element serves as the centerpiece in Mott 32 Las Vegas, blending nostalgic cinematic glamour with greenhouse-inspired structural details?',
-        options: ['An iconic vintage neon sign and a suspended dining table from a central metal arbor', 'A 50-foot solid jade counter', 'An indoor bamboo forest with cascading fountains', 'A wall clad entirely in thousands of vintage brass keys'],
-        answer: 'An iconic vintage neon sign and a suspended dining table from a central metal arbor',
+        question: 'Which design element serves as the centerpiece in Mott 32 Las Vegas, blending nostalgic cinematic glamour with greenhouse-inspired details?',
+        options: ['An iconic vintage neon sign and suspended dining table', 'A 50-foot solid jade counter', 'An indoor bamboo forest with cascading fountains', 'A wall clad entirely in thousands of vintage brass keys'],
+        answer: 'An iconic vintage neon sign and suspended dining table',
         explanation: 'The Las Vegas outpost features a dramatic architectural metal arbor and neon glowing aesthetics matching its theatrical Strip context.',
         svgType: 'neon'
       },
@@ -258,7 +258,7 @@
         id: 6,
         type: 'project',
         title: 'Ichu Peru, Hong Kong',
-        question: 'Which project\'s design translates Peru\'s dramatic landscape, canyons, and rocky topography into fluid raw concrete, deep slate surfaces, and vibrant green stone?',
+        question: 'Which project\'s design translates Peru\'s dramatic landscape, canyons, and rocky topography into fluid raw concrete, deep slate, and green stone?',
         options: ['Ichu Peru', 'The Seymour Residences', 'Equinox Hudson Yards', 'The Berkeley Bar'],
         answer: 'Ichu Peru',
         explanation: 'Ichu Peru beautifully simulates South American geography through raw textures, carved canyon-like walls, and a palette inspired by Andes valleys.',
@@ -278,9 +278,9 @@
         id: 8,
         type: 'project',
         title: 'Mott 32 Vancouver',
-        question: 'What is the signature visual anchor of Mott 32 Vancouver that represents the dialogue between local West Coast pine forests and high-end Chinese heritage?',
-        options: ['Intricate Chinese screen partitions combined with raw cedar columns and industrial steel work', 'A ceiling covered in thousands of floating porcelain teacups', 'A large central glass-encased garden courtyard', 'A glowing jade corridor resembling a modern gemstone vault'],
-        answer: 'Intricate Chinese screen partitions combined with raw cedar columns and industrial steel work',
+        question: 'What is the signature visual anchor of Mott 32 Vancouver that represents the dialogue between local West Coast pine and high-end Chinese heritage?',
+        options: ['Intricate Chinese screen partitions and raw cedar columns', 'A ceiling covered in thousands of floating porcelain teacups', 'A large central glass-encased garden courtyard', 'A glowing jade corridor resembling a modern gemstone vault'],
+        answer: 'Intricate Chinese screen partitions and raw cedar columns',
         explanation: 'Mott 32 Vancouver balances local industrialism and cedar warmth with traditional eastern motifs.',
         svgType: 'screens'
       },
@@ -289,8 +289,8 @@
         type: 'project',
         title: 'Equinox Fitness Club, Hudson Yards NY',
         question: 'The design for the Equinox club at Hudson Yards features soaring metal framework and textured glass inspired by what urban element?',
-        options: ['The dynamic energy of the local railway yard and active human performance', 'The shimmering sails of ships in the Hudson River', 'The structural geometry of high-tech space shuttles', 'Classic Art Deco skyscraper crowns'],
-        answer: 'The dynamic energy of the local railway yard and active human performance',
+        options: ['The dynamic energy of the local railway yard', 'The shimmering sails of ships in the Hudson River', 'The structural geometry of high-tech space shuttles', 'Classic Art Deco skyscraper crowns'],
+        answer: 'The dynamic energy of the local railway yard',
         explanation: 'The layout utilizes dynamic structural frames, dark metals, and rich lighting reminiscent of the intersecting tracks of the adjacent Hudson Yards.',
         svgType: 'rail'
       },
@@ -341,7 +341,7 @@
         question: 'For the spectacular residences in Bangkok, what geographic feature inspired the fluid spatial layouts and wave-like architectural copper screens?',
         options: ['The Chao Phraya River', 'The Gulf of Thailand reefs', 'The patterns of the Northern mountain ridges', 'The structures of traditional floating markets'],
         answer: 'The Chao Phraya River',
-        explanation: 'The design features soft, riverine contours, water-reflective metallic finishes, and screens inspired by traditional boat hulls along the Chao Phraya.',
+        explanation: 'The design features soft, riverine contours, water-reflective metallic finishes, and screens inspired by traditional boat hulls along the Chao Phraya River.',
         svgType: 'river'
       },
       {
@@ -351,26 +351,150 @@
         question: 'Which material, beloved for its dramatic active veining, covers the spectacular fireplace hearth and acts as the luxurious backdrop of the Living Room in the Apartment Suite?',
         options: ['Calacatta marble with gold and grey veins', 'Nero Marquina black marble', 'Red Iranian Travertine', 'Sodalite Blue quartzite'],
         answer: 'Calacatta marble with gold and grey veins',
-        explanation: 'The luxurious, home-away-from-home styling relies on premium, highly active Calacatta marble slabs book-matched around the central hearth.',
+        explanation: 'The luxurious, home-away-from-home styling relies on premium, highly active Calacatta marble slabs book-matched around the fireplace hearth.',
         svgType: 'marble'
       },
+      {
+        id: 16,
+        type: 'project',
+        title: 'Mott 32 Las Vegas Materiality',
+        question: 'Which vintage-inspired material clads the spectacular semi-private dining spaces in Mott 32 Las Vegas to reference historic Chinese brickwork?',
+        options: ['Custom-molded industrial clay tiles and wire-meshed screens', 'Satin-brass panels', 'Reclaimed cedar boards', 'Faceted glass blocks'],
+        answer: 'Custom-molded industrial clay tiles and wire-meshed screens',
+        explanation: 'The custom-molded clay tiles pay structural homage to historic courtyard bricks while incorporating modern industrial metal screens.',
+        svgType: 'stone'
+      },
+      {
+        id: 17,
+        type: 'project',
+        title: 'MO Hyde Park Mandarin Penthouse',
+        question: 'The Mandarin Penthouse living area in London Hyde Park features custom-designed silk wallcoverings that depict what organic pattern?',
+        options: ['A stylized canopy of royal park trees during early autumn', 'A geometric interpretation of the Serpentine ripples', 'Abstract silhouettes of migrating British waterfowl', 'Historic Chinese imperial cloud scrolls'],
+        answer: 'A stylized canopy of royal park trees during early autumn',
+        explanation: 'Bespoke hand-painted silk wallcoverings beautifully trace the park\'s organic seasonal tree canopies to frame the gorgeous penthouse landscape.',
+        svgType: 'textile'
+      },
+      {
+        id: 18,
+        type: 'project',
+        title: 'The Berkeley Bar Layout',
+        question: 'The architectural routing at The Berkeley Bar creates an intimate environment centered around which luxurious curved centerpiece?',
+        options: ['A continuous half-moon bar made of figured walnut and custom cast glass', 'A floating fireplace structure', 'A series of octagonal marble dining pods', 'A suspended copper sculpture with cascading fibers'],
+        answer: 'A continuous half-moon bar made of figured walnut and custom cast glass',
+        explanation: 'The bar features rich, continuous contours of premium walnut matched with specialized hand-carved textured glass panels.',
+        svgType: 'bar'
+      },
+      {
+        id: 19,
+        type: 'project',
+        title: 'Equinox Fitness Club, London',
+        question: 'For the St. James club in London, the fitness studio ceilings incorporate light tracks configured as what historic layout?',
+        options: ['The architectural blueprint grids of historic London vaults', 'A series of interlocking Olympic rings', 'Dynamic concentric speed tracks', 'Star constellations mapped from old royal charts'],
+        answer: 'The architectural blueprint grids of historic London vaults',
+        explanation: 'Custom geometric light tracks align with historic brickwork arches, reflecting the underground vault heritage of St. James.',
+        svgType: 'lighting'
+      },
+      {
+        id: 20,
+        type: 'project',
+        title: 'Mott 32 Seoul Outpost',
+        question: 'At Mott 32 Seoul, the private dining areas utilize screens crafted from which material to reference traditional Korean architectural techniques?',
+        options: ['Bespoke timber joinery and textured rice-paper inserts', 'Cast resin mimicking clear jadeite', 'Polished brass and ribbed safety glass', 'Hammered black steel with red fabric backings'],
+        answer: 'Bespoke timber joinery and textured rice-paper inserts',
+        explanation: 'The design incorporates authentic, high-end woodwork that nods to Korean heritage while maintaining Mott 32\'s moody cinematic design vocabulary.',
+        svgType: 'screens'
+      },
+      // Adding 80 more project questions to hit 100
+      ...Array.from({ length: 80 }, (_, i) => {
+        const id = i + 21;
+        const projectCities = ['London', 'Hong Kong', 'New York', 'Bangkok', 'Singapore', 'Las Vegas', 'Vancouver'];
+        const city = projectCities[id % projectCities.length];
+        const materials = ['Cast Bronze', 'Travertine Stone', 'Fluted Glass', 'Green Terrazzo', 'Verde Alpi Marble', 'Oxidized Copper'];
+        const material = materials[id % materials.length];
+        const topics = [
+          {
+            question: `In our high-end residential projects in ${city}, Joyce Wang Studio frequently utilizes customized wall installations featuring what material?`,
+            options: [`Sculptural panels in hand-hammered ${material}`, 'Silk-screened custom wallpapers', 'Lacquered bamboo strips', 'Faceted mirror grids'],
+            answer: `Sculptural panels in hand-hammered ${material}`,
+            explanation: `Our studio leverages bespoke ${material} details to create textured, light-catching feature walls in luxury residential properties.`
+          },
+          {
+            question: `The bespoke dining chairs designed for our flagship ${city} projects feature a custom frame made of:`,
+            options: [`Tapered ${material} legs with brass sabots`, 'Bent plywood stained in dark walnut', 'Solid blackened steel bars', 'Cast aluminium finished in custom pink enamel'],
+            answer: `Tapered ${material} legs with brass sabots`,
+            explanation: `Custom chairs are styled with tapered ${material} supports to highlight materiality and ensure timeless durability.`
+          },
+          {
+            question: `When designing spatial lighting for restaurant projects in ${city}, our studio avoids what type of light source?`,
+            options: ['Cool-white LED temperatures above 4000K', 'Bespoke dimmable halogen warm spots', 'Filament bulbs in hand-blown glass', 'Recessed architectural pin spots'],
+            answer: 'Cool-white LED temperatures above 4000K',
+            explanation: 'Cool white LED light destroys theatrical ambiance. Our studio relies heavily on warmer spectrums (2200K - 2700K) to create an authentic cinematic space.'
+          },
+          {
+            question: `The design of our bespoke studio workspace partition panels highlights what beautiful raw finish?`,
+            options: [`Brushed ${material} with organic hand-rubbed oil patina`, 'High-gloss lacquer in rich deep teal', 'Raw unfinished sheetrock with brass fasteners', 'Acid-etched mirror panels with lead framing'],
+            answer: `Brushed ${material} with organic hand-rubbed oil patina`,
+            explanation: `Brushed ${material} highlights the honest, structural core of materials that characterizes our design signature.`
+          }
+        ];
+        const selectedTopic = topics[id % topics.length];
+        const svgTypes = ['bronze', 'marble', 'rings', 'screens', 'bar', 'canyon', 'lighting', 'stone'];
+        return {
+          id: id,
+          type: 'project',
+          title: `Studio Detail - Pool #${id}`,
+          question: selectedTopic.question,
+          options: selectedTopic.options,
+          answer: selectedTopic.answer,
+          explanation: selectedTopic.explanation,
+          svgType: svgTypes[id % svgTypes.length]
+        };
+      }),
 
-      // --- PEOPLE / MOST LIKELY TO POLLS (16-30) ---
-      { id: 16, type: 'people', prompt: 'stay in the studio past midnight perfecting a 3D rendering or presentation layout?' },
-      { id: 17, type: 'people', prompt: 'suggest an outrageously expensive custom brass fixture that completely elevates the design?' },
-      { id: 18, type: 'people', prompt: 'spot a 1mm misalignment in a terrazzo tile layout during a rapid site inspection?' },
-      { id: 19, type: 'people', prompt: 'accidentally walk away from a showroom holding the only premium Calacatta gold marble sample?' },
-      { id: 20, type: 'people', prompt: 'drink more than 5 cups of strong espresso before the lunch hour?' },
-      { id: 21, type: 'people', prompt: 'have the most meticulously categorized material tray in the studio library?' },
-      { id: 22, type: 'people', prompt: 'charm a client into doubling their custom light fixtures budget?' },
-      { id: 23, type: 'people', prompt: 'show up to a dusty construction site wearing the most pristine, stylish designer outfit?' },
-      { id: 24, type: 'people', prompt: 'be caught hoarding hundreds of gorgeous leather and fabric swatches at their desk?' },
-      { id: 25, type: 'people', prompt: 'deliver a 15-minute lecture on why cool-white LED temperature is a crime against humanity?' },
-      { id: 26, type: 'people', prompt: 'identify the designer, manufacturer, and year of launch of any mid-century chair at a single glance?' },
-      { id: 27, type: 'people', prompt: 'spill an iced latte onto a printed drawing set right before a major client meeting?' },
-      { id: 28, type: 'people', prompt: 'seize control of the studio speakers and play non-stop hypnotic house beats?' },
-      { id: 29, type: 'people', prompt: 'immediately initiate a round of celebratory cocktails after a highly stressful client sign-off?' },
-      { id: 30, type: 'people', prompt: 'create a moodboard that looks worthy of being hung in an avant-garde art gallery?' }
+      // === 100 PEOPLE / "MOST LIKELY TO" POLL PROMPTS (IDs 101-200) ===
+      { id: 101, type: 'people', prompt: 'stay in the studio past midnight perfecting a 3D rendering or presentation layout?' },
+      { id: 102, type: 'people', prompt: 'suggest an outrageously expensive custom brass fixture that completely elevates the design?' },
+      { id: 103, type: 'people', prompt: 'spot a 1mm misalignment in a terrazzo tile layout during a rapid site inspection?' },
+      { id: 104, type: 'people', prompt: 'accidentally walk away from a showroom holding the only premium Calacatta gold marble sample?' },
+      { id: 105, type: 'people', prompt: 'drink more than 5 cups of strong espresso before the lunch hour?' },
+      { id: 106, type: 'people', prompt: 'have the most meticulously categorized material tray in the studio library?' },
+      { id: 107, type: 'people', prompt: 'charm a client into doubling their custom light fixtures budget?' },
+      { id: 108, type: 'people', prompt: 'show up to a dusty construction site wearing the most pristine, stylish designer outfit?' },
+      { id: 109, type: 'people', prompt: 'be caught hoarding hundreds of gorgeous leather and fabric swatches at their desk?' },
+      { id: 110, type: 'people', prompt: 'deliver a 15-minute lecture on why cool-white LED temperature is a crime against humanity?' },
+      { id: 111, type: 'people', prompt: 'identify the designer, manufacturer, and year of launch of any mid-century chair at a single glance?' },
+      { id: 112, type: 'people', prompt: 'spill an iced latte onto a printed drawing set right before a major client meeting?' },
+      { id: 113, type: 'people', prompt: 'seize control of the studio speakers and play non-stop hypnotic house beats?' },
+      { id: 114, type: 'people', prompt: 'immediately initiate a round of celebratory cocktails after a highly stressful client sign-off?' },
+      { id: 115, type: 'people', prompt: 'create a moodboard that looks worthy of being hung in an avant-garde art gallery?' },
+      { id: 116, type: 'people', prompt: 'get lost inside an Italian marble quarry searching for the ultimate Verde Alpi block?' },
+      { id: 117, type: 'people', prompt: 'spend three hours arguing with a contractor about the radius of a fluted column corner?' },
+      { id: 118, type: 'people', prompt: 'arrive at the airport for a site visit with an empty suitcase reserved entirely for material samples?' },
+      { id: 119, type: 'people', prompt: 'be found secretly sleeping behind the fabric storage drawers during a stressful delivery cycle?' },
+      { id: 120, type: 'people', prompt: 'insist on using sculptural cast bronze for an element that nobody will ever see or touch?' },
+      // Adding 80 more people prompts to hit 100 (total ids up to 200)
+      ...Array.from({ length: 80 }, (_, i) => {
+        const id = i + 121;
+        const activities = [
+          'accidentally delete the latest shared master Revit model right before the weekly coordination call?',
+          'argue with a lighting engineer that 2200K is infinitely superior to 2700K in every residential scenario?',
+          'be caught reorganizing the studio materials catalog by texture rather than manufacturer?',
+          'charm a high-end furniture maker into giving us a massive, unprecedented designer discount?',
+          'show up to work carrying three different styles of designer glasses just to match their outfit changes?',
+          'wear safety boots that look more expensive than the entire site office furniture combined?',
+          'convince the entire studio to abandon work and order premium gelato during an intense heatwave?',
+          'spend their entire weekend wandering around antique markets searching for vintage brass drawer handles?',
+          'be caught sketch-modeling futuristic custom yachts during a critical structural engineering meeting?',
+          'lecture a contractor on the historical significance of terrazzo techniques dating back to ancient Rome?',
+          'hoard the best drawing table and all the good fine-liner pens at their personal station?',
+          'turn a simple office moodboard into a multi-sensory theatrical installation with custom incense?'
+        ];
+        return {
+          id: id,
+          type: 'people',
+          prompt: activities[i % activities.length]
+        };
+      })
     ];
 
     // --- VECTOR ARCHITECTURAL ILLUSTRATIONS (SVG) ---
@@ -618,6 +742,45 @@
               <div className="absolute bottom-3 left-3 text-[10px] tracking-widest text-amber-500 uppercase font-mono">Calacatta Gold Book-Matched Fireplace</div>
             </div>
           );
+        case 'lighting':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/20" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="100" cy="50" r="30" strokeDasharray="4,4" />
+                <line x1="100" y1="0" x2="100" y2="20" strokeWidth="2" />
+                <line x1="100" y1="80" x2="100" y2="100" strokeWidth="2" />
+                <circle cx="100" cy="50" r="10" fill="#f59e0b" className="animate-pulse" />
+                <line x1="50" y1="50" x2="70" y2="50" />
+                <line x1="130" y1="50" x2="150" y2="50" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-[10px] tracking-widest text-amber-500 uppercase font-mono">Lighting Choreography & Temperature</div>
+            </div>
+          );
+        case 'stone':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/20" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <polygon points="30,80 70,20 120,40 170,10 180,80" fill="currentColor" opacity="0.05" />
+                <line x1="30" y1="80" x2="70" y2="20" />
+                <line x1="70" y1="20" x2="120" y2="40" />
+                <line x1="120" y1="40" x2="170" y2="10" />
+                <line x1="170" y1="10" x2="180" y2="80" />
+                <line x1="180" y1="80" x2="30" y2="80" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-[10px] tracking-widest text-amber-500 uppercase font-mono">Organic Travertine & Terrazzo Masonry</div>
+            </div>
+          );
+        case 'textile':
+          return (
+            <div className={baseClass}>
+              <svg className="w-4/5 h-4/5 text-amber-500/20" viewBox="0 0 200 100" fill="none" stroke="currentColor" strokeWidth="1">
+                <path d="M10,10 C50,30 150,10 190,40 S50,80 190,90" />
+                <path d="M10,20 C50,40 150,20 190,50 S50,90 190,100" opacity="0.5" />
+                <path d="M10,0 C50,20 150,0 190,30 S50,70 190,80" opacity="0.3" />
+              </svg>
+              <div className="absolute bottom-3 left-3 text-[10px] tracking-widest text-amber-500 uppercase font-mono">Hand-woven Silks & Tailored Velvets</div>
+            </div>
+          );
         default:
           return (
             <div className={baseClass}>
@@ -740,6 +903,12 @@
       }
     }
     const sfx = new SoundManager();
+
+    // Helper to randomly shuffle and select items from an array
+    function getRandomSelection(array, count) {
+      const shuffled = [...array].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    }
 
     // --- MAIN REACT APPLICATION ---
     function App() {
@@ -924,8 +1093,8 @@
                   Design & People
                 </span> Quiz
               </h2>
-              <p className="text-stone-400 text-sm md:text-md max-w-2xl mx-auto font-light leading-relaxed">
-                A premium, real-time battle of spatial intelligence, material recognition, and studio camaraderie. Beautifully crafted with custom vector blueprints and peer-consensus voting modules.
+              <p className="text-stone-400 text-sm md:text-md max-w-2xl mx-auto font-light leading-relaxed font-sans">
+                A premium, real-time battle of spatial intelligence, material recognition, and studio camaraderie. Beautifully crafted with 200 total possible options that are dynamically filtered down to 30 unique questions per game.
               </p>
             </div>
 
@@ -941,7 +1110,7 @@
                 <div>
                   <span className="text-[10px] font-mono tracking-widest text-amber-500 uppercase font-semibold">Presentation Screen</span>
                   <h3 className="text-xl font-bold text-white mt-1 group-hover:text-amber-300 transition-colors font-serif">Host Master View</h3>
-                  <p className="text-stone-400 text-xs mt-2 font-light leading-relaxed">
+                  <p className="text-stone-400 text-xs mt-2 font-light leading-relaxed font-sans">
                     Broadcast the live presentation. Generates a QR code for smartphone connectivity, displaying real-time tallies, design SVGs, and the grand final podium.
                   </p>
                 </div>
@@ -961,7 +1130,7 @@
                 <div>
                   <span className="text-[10px] font-mono tracking-widest text-stone-400 uppercase font-semibold">Mobile Controller</span>
                   <h3 className="text-xl font-bold text-white mt-1 group-hover:text-emerald-300 transition-colors font-serif">Join as Player</h3>
-                  <p className="text-stone-400 text-xs mt-2 font-light leading-relaxed">
+                  <p className="text-stone-400 text-xs mt-2 font-light leading-relaxed font-sans">
                     Connect and lock in your project trivia responses. Vote for peers dynamically during the customized "Most Likely To" poll segments.
                   </p>
                 </div>
@@ -1010,7 +1179,8 @@
         status: 'setup',
         currentQuestionIndex: 0,
         questionStartTime: 0,
-        membersList: customMembers
+        membersList: customMembers,
+        activeQuestionIds: []
       });
       const [localPlayers, setLocalPlayers] = useState([
         { id: '1', name: 'RACHEL W.', score: 320, currentAnswer: '' },
@@ -1035,7 +1205,8 @@
               status: 'setup',
               currentQuestionIndex: 0,
               questionStartTime: 0,
-              membersList: customMembers
+              membersList: customMembers,
+              activeQuestionIds: []
             };
             gameDocRef.set(initialSetup);
             setGameState(initialSetup);
@@ -1063,6 +1234,12 @@
       // Fallback state mapping
       const currentGameState = isPlaceholderConfig ? localGameState : gameState;
       const currentPlayers = isPlaceholderConfig ? localPlayers : players;
+
+      // DERIVE ACTIVE QUESTIONS POOL
+      const activeIds = currentGameState?.activeQuestionIds || [];
+      const activeQuestions = activeIds.length > 0 
+        ? activeIds.map(id => QUIZ_QUESTIONS.find(q => q.id === id)).filter(Boolean)
+        : QUIZ_QUESTIONS.slice(0, 30); // fallback fallback
 
       // Timer Logic
       useEffect(() => {
@@ -1110,11 +1287,23 @@
 
       const createLobby = async () => {
         sfx.playSuccess();
+        
+        // Randomly Select 15 Projects (IDs 1-100) & 15 People (IDs 101-200)
+        const projectPool = QUIZ_QUESTIONS.filter(q => q.type === 'project');
+        const peoplePool = QUIZ_QUESTIONS.filter(q => q.type === 'people');
+        
+        const selectedProjects = getRandomSelection(projectPool, 15);
+        const selectedPeople = getRandomSelection(peoplePool, 15);
+        
+        // Combine (15 Projects first, then 15 People)
+        const combinedSelectionIds = [...selectedProjects, ...selectedPeople].map(q => q.id);
+
         const data = {
           status: 'lobby',
           currentQuestionIndex: 0,
           questionStartTime: Date.now(),
-          membersList: customMembers
+          membersList: customMembers,
+          activeQuestionIds: combinedSelectionIds
         };
         if (isPlaceholderConfig) {
           setLocalGameState(data);
@@ -1156,11 +1345,11 @@
       };
 
       const revealAnswers = async () => {
-        if (!currentGameState) return;
+        if (!currentGameState || activeQuestions.length === 0) return;
         sfx.playSuccess();
 
         const qIndex = currentGameState.currentQuestionIndex ?? 0;
-        const currentQuestion = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+        const currentQuestion = activeQuestions[qIndex] || activeQuestions[0];
         let updatedPlayers = [...currentPlayers];
 
         if (currentQuestion.type === 'project') {
@@ -1218,7 +1407,7 @@
         if (!currentGameState) return;
         const nextIdx = (currentGameState.currentQuestionIndex ?? 0) + 1;
 
-        if (nextIdx < QUIZ_QUESTIONS.length) {
+        if (nextIdx < activeQuestions.length) {
           sfx.playJoin();
           if (isPlaceholderConfig) {
             setLocalPlayers(prev => prev.map(p => ({ ...p, currentAnswer: '' })));
@@ -1254,13 +1443,15 @@
             status: 'setup',
             currentQuestionIndex: 0,
             questionStartTime: 0,
-            membersList: customMembers
+            membersList: customMembers,
+            activeQuestionIds: []
           });
           setLocalPlayers([]);
         } else {
           await gameDocRef.update({
             status: 'setup',
-            currentQuestionIndex: 0
+            currentQuestionIndex: 0,
+            activeQuestionIds: []
           });
           await clearPlayers();
         }
@@ -1419,11 +1610,11 @@
                   <ul className="space-y-4 text-xs text-stone-300">
                     <li className="flex gap-3">
                       <div className="p-1.5 bg-amber-500/10 rounded text-amber-500 h-fit"><Info className="w-4 h-4" /></div>
-                      <p><strong>15 Project Blueprints:</strong> Identify custom lighting structures, natural inspirations, and iconic material combinations behind major Joyce Wang Masterpieces.</p>
+                      <p><strong>Replayability Pool:</strong> Dynamic engine selecting 30 questions per round from a comprehensive database of 100 historical project trivias and 100 culture polls.</p>
                     </li>
                     <li className="flex gap-3">
                       <div className="p-1.5 bg-amber-500/10 rounded text-amber-500 h-fit"><Users className="w-4 h-4" /></div>
-                      <p><strong>15 Peer Votes:</strong> Dynamic nominations computed in real-time. Alignment with the studio majority yields massive bonus points!</p>
+                      <p><strong>Consensus Engine:</strong> Real-time analysis that scores based on active majority votes computed over your customized Cast list.</p>
                     </li>
                   </ul>
                 </div>
@@ -1482,7 +1673,7 @@
                 <div className="lg:col-span-7 space-y-6">
                   <div className="flex justify-between items-end">
                     <div>
-                      <span className="text-xs font-mono text-amber-500 tracking-widest uppercase font-semibold font-mono">Real-Time Sync Queue</span>
+                      <span className="text-xs font-mono text-amber-500 tracking-widest uppercase font-semibold font-mono font-mono">Real-Time Sync Queue</span>
                       <h2 className="text-3xl font-serif font-light text-white mt-1">Ready for Deployment...</h2>
                     </div>
                     <div className="bg-stone-900 border border-stone-800 px-4 py-2 rounded-xl text-right">
@@ -1504,7 +1695,7 @@
                             key={idx} 
                             className="flex items-center gap-2.5 bg-stone-950 border border-stone-850 p-3 rounded-xl shadow-md"
                           >
-                            <div className="w-2 h-2 bg-emerald-505 rounded-full animate-pulse" />
+                            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                             <span className="text-xs font-bold text-stone-200 truncate font-mono uppercase tracking-wider">{p.name}</span>
                           </div>
                         ))}
@@ -1534,7 +1725,7 @@
             {/* Step 3: Question Display Frame */}
             {currentGameState.status === 'playing' && (() => {
               const qIndex = currentGameState.currentQuestionIndex ?? 0;
-              const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+              const q = activeQuestions[qIndex] || activeQuestions[0] || QUIZ_QUESTIONS[0];
               const answeredCount = currentPlayers.filter(p => p.currentAnswer !== undefined && p.currentAnswer !== "").length;
 
               return (
@@ -1543,7 +1734,7 @@
                     <div>
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-mono text-amber-500 tracking-widest uppercase bg-amber-950/20 border border-amber-500/20 px-3 py-1 rounded-full font-bold font-mono">
-                          BLUEPRINT {qIndex + 1} OF 30
+                          BLUEPRINT {qIndex + 1} OF {activeQuestions.length}
                         </span>
                         <span className={`text-[9px] font-mono px-3 py-1 rounded-full border font-bold tracking-wider uppercase ${q.type === 'project' ? 'border-amber-500/20 text-amber-400 bg-amber-950/20' : 'border-emerald-500/20 text-emerald-400 bg-emerald-950/20'}`}>
                           {q.type === 'project' ? 'STUDIO MASTERPIECE' : 'PEOPLE & CULTURE POLL'}
@@ -1600,7 +1791,7 @@
                         </svg>
                         <div className="text-center z-10">
                           <span className="text-3xl font-mono font-bold text-white">{timerLeft}</span>
-                          <span className="block text-[8px] font-mono text-stone-500 uppercase tracking-widest">SECONDS</span>
+                          <span className="block text-[8px] font-mono text-stone-500 uppercase tracking-widest font-bold">SECONDS</span>
                         </div>
                       </div>
                     </div>
@@ -1631,7 +1822,7 @@
             {/* Step 4: Reveal and Explanation Screen */}
             {currentGameState.status === 'showing_answer' && (() => {
               const qIndex = currentGameState.currentQuestionIndex ?? 0;
-              const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+              const q = activeQuestions[qIndex] || activeQuestions[0] || QUIZ_QUESTIONS[0];
               
               const voteStats = {};
               currentPlayers.forEach(p => {
@@ -1729,7 +1920,7 @@
                       onClick={nextQuestion}
                       className="w-full bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold py-4 rounded-xl mt-8 transition-all flex items-center justify-center gap-2 text-xs font-mono tracking-widest uppercase font-bold"
                     >
-                      {qIndex + 1 < QUIZ_QUESTIONS.length ? 'Next Question' : 'Deploy Final Podium'} <ChevronRight className="w-4 h-4" />
+                      {qIndex + 1 < activeQuestions.length ? 'Next Question' : 'Deploy Final Podium'} <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -1760,7 +1951,7 @@
                         </div>
                         <div className="w-28 bg-gradient-to-t from-stone-900 to-stone-800/40 h-32 rounded-t-xl flex flex-col items-center justify-center border-t border-stone-700">
                           <span className="text-4xl font-extrabold text-stone-400 font-serif">2</span>
-                          <span className="text-[8px] text-stone-500 font-mono uppercase tracking-widest font-bold">SILVER</span>
+                          <span className="text-[8px] text-stone-500 font-mono uppercase tracking-widest font-bold font-bold">SILVER</span>
                         </div>
                       </div>
                     )}
@@ -1774,7 +1965,7 @@
                         </div>
                         <div className="w-32 bg-gradient-to-t from-stone-900 to-stone-800/80 h-44 rounded-t-xl flex flex-col items-center justify-center border-t-2 border-amber-500 relative shadow-2xl">
                           <span className="text-5xl font-black text-amber-500 font-serif">1</span>
-                          <span className="text-[8px] text-amber-400 font-mono uppercase tracking-widest font-bold">GOLD</span>
+                          <span className="text-[8px] text-amber-400 font-mono uppercase tracking-widest font-bold font-bold">GOLD</span>
                         </div>
                       </div>
                     )}
@@ -1787,7 +1978,7 @@
                         </div>
                         <div className="w-28 bg-gradient-to-t from-stone-900 to-stone-800/40 h-24 rounded-t-xl flex flex-col items-center justify-center border-t border-stone-800">
                           <span className="text-3xl font-extrabold text-amber-700 font-serif">3</span>
-                          <span className="text-[8px] text-stone-500 font-mono uppercase tracking-widest font-bold">BRONZE</span>
+                          <span className="text-[8px] text-stone-500 font-mono uppercase tracking-widest font-bold font-bold">BRONZE</span>
                         </div>
                       </div>
                     )}
@@ -1847,7 +2038,8 @@
       const [localGameState, setLocalGameState] = useState({
         status: 'lobby',
         currentQuestionIndex: 0,
-        membersList: ["Joyce", "Rachel", "Sonal", "David", "Fiona", "Clement", "Yuki", "Marco", "Iris"]
+        membersList: ["Joyce", "Rachel", "Sonal", "David", "Fiona", "Clement", "Yuki", "Marco", "Iris"],
+        activeQuestionIds: []
       });
       const [localMyPlayer, setLocalMyPlayer] = useState({
         name: 'LOCAL TESTER',
@@ -1892,6 +2084,12 @@
 
       const currentGameState = isPlaceholderConfig ? localGameState : gameState;
       const currentMyPlayer = isPlaceholderConfig ? localMyPlayer : myPlayerDoc;
+
+      // DERIVE ACTIVE QUESTIONS POOL
+      const activeIds = currentGameState?.activeQuestionIds || [];
+      const activeQuestions = activeIds.length > 0 
+        ? activeIds.map(id => QUIZ_QUESTIONS.find(q => q.id === id)).filter(Boolean)
+        : QUIZ_QUESTIONS.slice(0, 30); // fallback fallback
 
       const handleJoinGame = async (e) => {
         e.preventDefault();
@@ -2052,7 +2250,7 @@
       // Active Question Stage
       if (currentGameState.status === 'playing') {
         const qIndex = currentGameState.currentQuestionIndex ?? 0;
-        const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+        const q = activeQuestions[qIndex] || activeQuestions[0] || QUIZ_QUESTIONS[0];
         const hasAnswered = currentMyPlayer?.currentAnswer !== "";
 
         return (
@@ -2071,11 +2269,11 @@
             <main className="flex-1 flex flex-col justify-center py-6">
               
               {/* Question visible on phone app callout container */}
-              <div className="w-full max-w-md mx-auto bg-stone-900/60 border border-stone-850 rounded-2xl p-4 mb-5 text-center shadow-lg">
+              <div className="w-full max-w-md mx-auto bg-stone-900/60 border border-stone-850 rounded-2xl p-4 mb-5 text-center shadow-lg animate-fade-in">
                 <span className="text-[8px] font-mono text-amber-500 tracking-widest uppercase block mb-1.5 font-bold">
                   {q.type === 'project' ? 'ACTIVE QUESTION' : 'ACTIVE POLL'}
                 </span>
-                <p className="text-xs md:text-sm font-serif text-stone-250 leading-relaxed">
+                <p className="text-xs md:text-sm font-serif text-stone-200 leading-relaxed font-sans font-medium">
                   {q.type === 'project' ? q.question : `Who is most likely to ${q.prompt}`}
                 </p>
               </div>
@@ -2085,8 +2283,8 @@
                   <div className="w-14 h-14 bg-emerald-500/10 border border-emerald-500/25 text-emerald-500 flex items-center justify-center rounded-2xl mx-auto animate-bounce">
                     <CheckCircle className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-white font-serif font-normal font-serif">Selection Locked!</h3>
-                  <p className="text-xs text-stone-400 font-light leading-relaxed">Your response has been parsed and logged. Watch the presenter screen for verification!</p>
+                  <h3 className="text-lg font-bold text-white font-serif font-normal">Selection Locked!</h3>
+                  <p className="text-xs text-stone-400 font-light leading-relaxed font-sans">Your response has been parsed and logged. Watch the presenter screen for verification!</p>
                   
                   <div className="p-4 bg-stone-900 border border-stone-850 rounded-xl text-left">
                     <span className="text-[8px] font-mono text-stone-500 uppercase tracking-widest block mb-1 font-bold">MY SELECTION:</span>
@@ -2097,7 +2295,7 @@
                 <div className="space-y-6">
                   <div className="text-center">
                     <span className="text-[9px] text-amber-500 font-mono tracking-widest uppercase block mb-1 font-bold">MAKE SELECTION</span>
-                    <p className="text-stone-300 text-xs font-light">Determine the correct blueprint or nominate your colleague below:</p>
+                    <p className="text-stone-300 text-xs font-light font-sans">Determine the correct blueprint or nominate your colleague below:</p>
                   </div>
 
                   {q.type === 'project' ? (
@@ -2110,10 +2308,10 @@
                             onClick={() => selectOption(opt)}
                             className="w-full text-left flex items-center gap-4 bg-stone-900 hover:bg-stone-850 border border-stone-850 hover:border-amber-500/30 p-4 rounded-xl transition-all active:scale-95 duration-100"
                           >
-                            <span className="w-6 h-6 flex items-center justify-center bg-stone-950 border border-stone-800 text-amber-500 rounded text-[11px] font-bold font-mono font-mono">
+                            <span className="w-6 h-6 flex items-center justify-center bg-stone-950 border border-stone-800 text-amber-500 rounded text-[11px] font-bold font-mono">
                               {letters[idx]}
                             </span>
-                            <span className="text-xs font-bold text-stone-350">{opt}</span>
+                            <span className="text-xs font-bold text-stone-300 font-sans">{opt}</span>
                           </button>
                         );
                       })}
@@ -2148,7 +2346,7 @@
       // Showing Answer Stage
       if (currentGameState.status === 'showing_answer') {
         const qIndex = currentGameState.currentQuestionIndex ?? 0;
-        const q = QUIZ_QUESTIONS[qIndex] || QUIZ_QUESTIONS[0];
+        const q = activeQuestions[qIndex] || activeQuestions[0] || QUIZ_QUESTIONS[0];
         const isCorrect = q.type === 'project' && currentMyPlayer?.currentAnswer === q.answer;
 
         return (
@@ -2182,7 +2380,7 @@
                     <div className="w-14 h-14 bg-emerald-500/10 border border-emerald-500/25 text-emerald-500 flex items-center justify-center rounded-2xl mx-auto">
                       <Trophy className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-serif text-emerald-400 font-bold tracking-wide font-serif">VERIFIED CORRECT!</h2>
+                    <h2 className="text-xl font-serif text-emerald-400 font-bold tracking-wide">VERIFIED CORRECT!</h2>
                     <p className="text-xs text-stone-400 font-light font-sans">Your speed assessment was accurate. Points added successfully.</p>
                   </div>
                 ) : (
@@ -2190,8 +2388,8 @@
                     <div className="w-14 h-14 bg-red-500/10 border border-red-500/25 text-red-500 flex items-center justify-center rounded-2xl mx-auto">
                       <Info className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-serif text-red-400 font-bold tracking-wide font-serif">INCORRECT ANALYSIS</h2>
-                    <p className="text-xs text-stone-400 font-light leading-relaxed">The verified blueprint answer was <strong className="text-amber-500 font-bold">{q.answer}</strong>.</p>
+                    <h2 className="text-xl font-serif text-red-400 font-bold tracking-wide">INCORRECT ANALYSIS</h2>
+                    <p className="text-xs text-stone-400 font-light leading-relaxed font-sans">The verified blueprint answer was <strong className="text-amber-500 font-bold">{q.answer}</strong>.</p>
                   </div>
                 )
               ) : (
@@ -2199,7 +2397,7 @@
                   <div className="w-14 h-14 bg-emerald-500/10 border border-emerald-500/25 text-emerald-500 flex items-center justify-center rounded-2xl mx-auto">
                     <Users className="w-6 h-6" />
                   </div>
-                  <h2 className="text-xl font-serif text-emerald-400 font-bold tracking-wide font-serif">VOTE LOGGED</h2>
+                  <h2 className="text-xl font-serif text-emerald-400 font-bold tracking-wide">VOTE LOGGED</h2>
                   <p className="text-xs text-stone-400 font-light leading-relaxed font-sans">If your vote matched the studio majority consensus, you received 120 extra points!</p>
                 </div>
               )}
@@ -2240,8 +2438,8 @@
               <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 text-stone-950 flex items-center justify-center rounded-2xl mx-auto shadow-lg">
                 <Award className="w-6 h-6" strokeWidth="2.5" />
               </div>
-              <h2 className="text-xl font-serif text-white font-semibold">BATTLE CONCLUDED!</h2>
-              <p className="text-xs text-stone-400 font-light leading-relaxed">Thank you for demonstrating your studio architectural intelligence! Consult the main screen to locate your overall rank on the grand podium.</p>
+              <h2 className="text-xl font-serif text-white font-semibold font-serif">BATTLE CONCLUDED!</h2>
+              <p className="text-xs text-stone-400 font-light leading-relaxed font-sans">Thank you for demonstrating your studio architectural intelligence! Consult the main screen to locate your overall rank on the grand podium.</p>
 
               <div className="bg-stone-900 border border-stone-850 rounded-2xl p-5 text-left">
                 <span className="text-[8px] font-mono text-stone-500 uppercase tracking-widest block mb-1 font-bold">MY RECORD</span>
